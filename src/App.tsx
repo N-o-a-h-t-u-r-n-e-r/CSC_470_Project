@@ -20,14 +20,21 @@ const App = () => {
   }
 
   return (
-    <div>
-      <h1>Hello world</h1>
-      <form onSubmit={handleSubmit}>
-        <input type= "text" ref={dataRef} />
-        <button type = "submit">Save</button>
-      </form>
+    <div className="app-container">
+        <div className="app-header">
+          <h1>Header Content Goes Here</h1>
+        </div>
+        <div className="app-content">
+            <h1>Hello world</h1>
+            <form onSubmit={handleSubmit}>
+              <input type="text" ref={dataRef} />
+              <button type="submit">Save</button>
+            </form>
+        </div>
+        <div className="app-footer">
+          <h1>Footer Content Goes Here</h1>
+        </div>
     </div>
-    
   );
 };
 
