@@ -21,7 +21,7 @@ const App = () => {
 
   return (
     <div>
-      <p>Your cleaned App component</p>
+      <h1>Test auto deploy</h1>
       <form onSubmit={handleSubmit}>
         <input type= "text" ref={dataRef} />
         <button type = "submit">Save</button>
