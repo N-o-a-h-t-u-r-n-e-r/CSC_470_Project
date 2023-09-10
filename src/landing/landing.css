@@ -1,0 +1,136 @@
+/* Reset some default styles */
+body, h1, h2, h3, p {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Define global styles */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Header styles */
+  header {
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  nav h1 {
+    font-size: 24px;
+  }
+  
+  nav ul {
+    list-style: none;
+    display: flex;
+  }
+  
+  nav ul li {
+    margin-right: 20px;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: #333;
+  }
+  
+  /* Hero section styles */
+  .hero {
+    background-image: url('https://static.vecteezy.com/system/resources/previews/019/051/581/original/dumbbell-symbol-icon-png.png'); /* Add your background image */
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-align: center;
+    padding: 100px 0;
+  }
+  
+  .hero h2 {
+    font-size: 36px;
+  }
+  
+  .hero p {
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  
+  .cta-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff5733; /* Customize your button color */
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+  
+  /* Features section styles */
+  .features {
+    background-color: #fff;
+    padding: 80px 0;
+  }
+  
+  .features h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 40px;
+  }
+  
+  .feature {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .feature h3 {
+    font-size: 24px;
+  }
+  
+  .feature p {
+    font-size: 16px;
+  }
+  
+  /* Download section styles */
+  .download {
+    text-align: center;
+    background-color: #ff5733; /* Customize your section background color */
+    color: #fff;
+    padding: 100px 0;
+  }
+  
+  .download h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+  
+  /* Contact section styles */
+  .contact {
+    background-color: #fff;
+    padding: 80px 0;
+    text-align: center;
+  }
+  
+  .contact h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  /* Footer styles */
+  footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+  }

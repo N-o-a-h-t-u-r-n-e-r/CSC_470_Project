@@ -1,6 +1,9 @@
 import React, { useRef } from "react";
+
 import { addDoc, collection } from "@firebase/firestore"
 import { firestore } from "./firebase_setup/firebase"
+
+import "./styles.css";
 
 const App = () => {
   const dataRef = useRef<HTMLInputElement>(null);

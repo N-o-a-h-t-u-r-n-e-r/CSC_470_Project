@@ -6,11 +6,19 @@
   box-sizing: border-box;
 }
 
+:root {
+  --background-color: #292929;
+  --foreground-color: #F5F5F5;
+  --primary-color: #0E79B2;
+  --secondary-color: #F39237;
+  --accessory-color: #BF1363;
+}
+
 body {
   font-family: "Segoe UI", Arial, Helvetica, sans-serif;
 }
 
-/************ App.tsx ************/
+/************ App.tsx ***********/
 
 .app-container {
   display: flex;
@@ -19,7 +27,7 @@ body {
 }
 
 .app-header {
-  background-color: #333;
+  background-color: var(--background-color);
   color: #fff;
   padding: 20px;
   text-align: center;
@@ -32,7 +40,7 @@ body {
 }
 
 .app-footer {
-  background-color: #333;
+  background-color: var(--background-color);
   color: #fff;
   padding: 20px;
   text-align: center;
@@ -52,7 +60,7 @@ input[type="text"] {
 
 button[type="submit"] {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: var(--primary-color);
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -60,7 +68,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-  background-color: #0056b3;
+  background-color: var(--primary-color);
 }
 
 /* Media Query for Mobile Devices */
@@ -68,4 +76,4 @@ button[type="submit"]:hover {
   .app-content {
       padding: 10px;
   }
-}
+} 
