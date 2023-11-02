@@ -32,6 +32,7 @@ const App = () => {
             <form onSubmit={handleSubmit}>
               <input type="text" ref={dataRef} />
               <button type="submit">Save</button>
+              <button type="button">Click Me!</button>
             </form>
         </div>
         <div className="app-footer">
