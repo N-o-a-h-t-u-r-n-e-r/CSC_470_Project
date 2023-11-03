@@ -39,7 +39,28 @@ body {
   display: flex;
   height: 90%;
   width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 /************ App.tsx ***********/
 
+
+
+/************ Login.tsx ***********/
+
+.login-container {
+
+
+  .login-header {
+
+  }
+
+  .login-body {
+
+  }
+  
+  .login-submit {
+
+  }
+}

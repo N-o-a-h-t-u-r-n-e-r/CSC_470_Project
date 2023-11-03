@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { addDoc, collection } from "@firebase/firestore"
 import { firestore } from "./firebase_setup/firebase"
 
 import "./styles.css";
+import Login from "./Pages/Login/Login";
 
 const App = () => {
+
+  const [loggedIn, setLoggedIn] = useState(false);
 
   // const handleSubmit = (e: React.FormEvent) => {
   //   e.preventDefault();
@@ -22,8 +25,14 @@ const App = () => {
   // }
 
   return (
-    <div className="app">
-    </div>
+    <>
+      {loggedIn ? 
+        <div className="app">
+        </div>
+      :
+        <Login/>
+      }
+    </>
   );
 };
 
