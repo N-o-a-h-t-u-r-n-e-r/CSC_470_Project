@@ -7,15 +7,38 @@
 }
 
 :root {
-  --background-color: #292929;
-  --foreground-color: #F5F5F5;
-  --primary-color: #0E79B2;
-  --secondary-color: #F39237;
-  --accessory-color: #BF1363;
+  --primary-color: #0072E9;
 }
 
 body {
-  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+/************ Layout.tsx ***********/
+
+.layout-header {
+  display: inline-flex;
+  align-items: center;
+  height: 10%;
+  width: 100%;
+  background: var(--primary-color);
+  padding: 20px;
+
+  .user-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    background: var(--primary-color);
+    border: none;
+    cursor: pointer;
+  }
+}
+
+.layout-body {
+  display: flex;
+  height: 90%;
+  width: 100%;
 }
 
 /************ App.tsx ***********/

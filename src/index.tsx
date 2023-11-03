@@ -3,21 +3,22 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import "./styles.css";
-import App from "./app";
-import Landing from "./landing/landing";
+import Layout from "./Layout/Layout";
 
 const container = document.getElementById('root');
 const root = createRoot(container!); 
 
 root.render(
     <Router>
-        <Routes>
-            <Route path="/" element={
-                <App />
-            }/>
-            <Route path="/landing" element={
-                <Landing />
-            }/>
-        </Routes>
-    </Router>
+        <Layout>
+            <Routes>
+                {/* <Route path="/" element={
+                    <App />
+                }/>
+                <Route path="/landing" element={
+                    <Landing />
+                }/> */}
+            </Routes>
+        </Layout>
+    </Router>    
 );
