@@ -10,8 +10,14 @@
   --primary-color: #0072E9;
 }
 
+#root {
+  min-height: 100vh;
+}
+
 body {
+  min-height: 100vh;
   font-family: 'Source Sans Pro', sans-serif;
+  font-size: 18px;
 }
 
 /************ Layout.tsx ***********/
@@ -19,10 +25,11 @@ body {
 .layout-header {
   display: inline-flex;
   align-items: center;
-  height: 10%;
+  height: 60px;
   width: 100%;
   background: var(--primary-color);
-  padding: 20px;
+  padding: 5px 20px;
+  filter: drop-shadow(lightgrey 0 1px 10px);
 
   .user-icon {
     display: inline-flex;
@@ -37,7 +44,7 @@ body {
 
 .layout-body {
   display: flex;
-  height: 90%;
+  height: calc(100vh - 60px);
   width: 100%;
   align-items: center;
   justify-content: center;
@@ -50,17 +57,50 @@ body {
 /************ Login.tsx ***********/
 
 .login-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  width: 50%;
+  padding: 40px;
+  border-radius: 20px;
+  filter: drop-shadow(lightgrey 0 0 10px);
+
 
 
   .login-header {
-
+    padding-bottom: 50px;
   }
 
   .login-body {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 60px;
 
+    .login-input {
+      padding: 20px;
+      margin-bottom: 40px;
+    }
   }
   
   .login-submit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+    
+    .login-button {
+      background-color: var(--primary-color);
+      font-size: 1.1rem;
+      width: 40%;
+      margin-bottom: 10px;
+      padding: 10px 0;
+      border: none;
+      border-radius: 5px;
+    }
 
+    .login-signup { 
+      color: inherit; 
+      text-decoration: none;
+    } 
   }
 }

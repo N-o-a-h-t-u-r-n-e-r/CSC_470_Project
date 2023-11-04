@@ -6,9 +6,18 @@ import { firestore } from "./firebase_setup/firebase"
 import "./styles.css";
 import Login from "./Pages/Login/Login";
 
-const App = () => {
+interface Props {
+  setLoggedIn: (input: boolean) => void,
+}
 
-  const [loggedIn, setLoggedIn] = useState(false);
+const App = (props: Props) => {
+
+  const [loginToken, setLoginToken] = useState();
+  const [loggedIn, _setLoggedIn] = useState(false);
+  const setLoggedIn = (input: boolean) => {
+    props.setLoggedIn(input);
+    _setLoggedIn(input);
+  }
 
   // const handleSubmit = (e: React.FormEvent) => {
   //   e.preventDefault();
@@ -23,6 +32,10 @@ const App = () => {
   
   //   dataRef.current!.value = "";
   // }
+
+  // <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+  //   Log Out
+  // </button>
 
   return (
     <>
