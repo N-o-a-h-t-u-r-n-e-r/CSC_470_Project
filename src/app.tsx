@@ -4,6 +4,7 @@ import { AuthContext } from "./Context/AuthContext";
 import "./styles.css";
 
 import Landing from "./Pages/Landing/Landing";
+import StartWorkout from "./Pages/Workout/StartWorkout";
 
 const App = () => {
 
@@ -12,8 +13,7 @@ const App = () => {
   return (
     <>
       {loggedIn ? 
-        <div className="app">
-        </div>
+        <StartWorkout />
       :
         <Landing />
       }

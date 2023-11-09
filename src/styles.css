@@ -31,6 +31,50 @@ body {
   padding: 5px 20px;
   filter: drop-shadow(lightgrey 0 1px 10px);
 
+  .nav-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-color);
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-right: 10px;
+  }
+
+  .nav-options {
+    position: absolute;
+    top: 65px;
+    left: 15px;
+    background: #fff;
+    border: 1px solid black;
+    border-radius: 10px;
+    filter: drop-shadow(darkgrey 0 0 5px);
+    padding: 10px;
+
+    .list-container {
+      list-style-type: none;
+
+      .list-item {
+        font-weight: bold;
+
+        &:not(:last-child) {
+          padding-bottom: 5px;
+          border-bottom: 1px solid darkgrey;
+        }
+
+        &:not(:first-child) {
+          padding-top: 5px;
+        }
+
+        .link {
+          color: inherit;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
   .user-login {
     display: inline-flex;
     align-items: center;

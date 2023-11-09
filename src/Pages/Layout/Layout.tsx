@@ -1,6 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import { AuthContext } from '../../Context/AuthContext';
+import Bars from '../../Assets/Bars';
+import { Navigate } from 'react-router-dom';
 
 interface Props {
     
@@ -9,8 +11,9 @@ interface Props {
 const Layout: React.FC<React.PropsWithChildren<Props>> = (props) => {
 
     const { user, isLoading, loginWithRedirect, logout } = useAuth0();
-
     const { loggedIn, setLoggedIn } = useContext(AuthContext);
+
+    const [showNavOptions, setShowNavOptions] = useState(false);
 
     useEffect(() => {
         if(user)
@@ -30,6 +33,14 @@ const Layout: React.FC<React.PropsWithChildren<Props>> = (props) => {
     return (
         <>
             <div className='layout-header'>
+                <button className='nav-button' onClick={() => setShowNavOptions(!showNavOptions)}><Bars/></button>
+                {showNavOptions && <div className='nav-options'>
+                    <ul className='list-container'>
+                        <li className='list-item'><a className='link' href='/StartWorkout'>Start Workout</a></li>
+                        <li className='list-item'><a className='link' href='/StartWorkout'>Workout Plans</a></li>
+                        <li className='list-item'><a className='link' href='/StartWorkout'>User Progress</a></li>
+                    </ul>
+                </div>}
                 <h1>Gym Rat Lab</h1>
                 {loggedIn ?
                     <button className='user-login' onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}><h3>Logout</h3></button>

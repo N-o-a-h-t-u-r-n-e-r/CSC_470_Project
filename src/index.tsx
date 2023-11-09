@@ -7,6 +7,7 @@ import App from "./app";
 import { AuthProvider } from "./Context/AuthContext";
 
 import "./styles.css";
+import StartWorkout from './Pages/Workout/StartWorkout';
 
 const container = document.getElementById('root');
 const root = createRoot(container!); 
@@ -19,6 +20,9 @@ root.render(
                     <Routes>
                         <Route path="/" element={
                             <App />
+                        }/>
+                        <Route path="/StartWorkout" element={
+                            <StartWorkout />
                         }/>
                     </Routes>
                 </Layout>
