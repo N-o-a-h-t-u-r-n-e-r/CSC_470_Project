@@ -1,4 +1,4 @@
-export interface Conversation {
+export interface User {
     [key: string]: any;
     User_ID: number;
     Username: string;
