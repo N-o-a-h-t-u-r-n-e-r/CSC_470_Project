@@ -37,8 +37,8 @@ const Layout: React.FC<React.PropsWithChildren<Props>> = (props) => {
                 {showNavOptions && <div className='nav-options'>
                     <ul className='list-container'>
                         <li className='list-item'><a className='link' href='/StartWorkout'>Start Workout</a></li>
-                        <li className='list-item'><a className='link' href='/StartWorkout'>Workout Plans</a></li>
-                        <li className='list-item'><a className='link' href='/StartWorkout'>User Progress</a></li>
+                        <li className='list-item'><a className='link' href='/WorkoutPlans'>Workout Plans</a></li>
+                        <li className='list-item'><a className='link' href='/UserProgress'>User Progress</a></li>
                     </ul>
                 </div>}
                 <h1>Gym Rat Lab</h1>

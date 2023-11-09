@@ -1,13 +1,14 @@
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Auth0Provider } from "@auth0/auth0-react";
-
-import Layout from "./Pages/Layout/Layout";
-import App from "./app";
 import { AuthProvider } from "./Context/AuthContext";
 
 import "./styles.css";
+import Layout from "./Pages/Layout/Layout";
+import App from "./app";
 import StartWorkout from './Pages/Workout/StartWorkout';
+import WorkoutPlans from './Pages/Progress/WorkoutPlans';
+import UserProgress from './Pages/Plans/UserProgress';
 
 const container = document.getElementById('root');
 const root = createRoot(container!); 
@@ -23,6 +24,12 @@ root.render(
                         }/>
                         <Route path="/StartWorkout" element={
                             <StartWorkout />
+                        }/>
+                        <Route path="/WorkoutPlans" element={
+                            <WorkoutPlans />
+                        }/>
+                        <Route path="/UserProgress" element={
+                            <UserProgress />
                         }/>
                     </Routes>
                 </Layout>
