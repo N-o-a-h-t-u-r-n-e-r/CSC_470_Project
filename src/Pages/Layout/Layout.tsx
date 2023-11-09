@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { AuthContext } from '../../Context/AuthContext';
 
 interface Props {
+    
 }
 
 const Layout: React.FC<React.PropsWithChildren<Props>> = (props) => {

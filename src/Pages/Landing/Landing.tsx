@@ -1,11 +1,5 @@
-import React from 'react';
-
-interface Props {
-
-}
-  
-const Landing = (props: Props) => {
-    return (
+const Landing = () => {
+    return(
         <div className='landing-page'>
             <div className='landing-header'>
                 <h1 className='landing-title'>Unleash Your Potential</h1>
