@@ -159,6 +159,116 @@ body {
   }
 }
 
+/************ WorkoutInProgress.tsx ***********/
+
+.workout-in-progress-container {
+  min-height: 60%;
+  max-height: 60%;
+  width: 60%;
+  padding: 30px 60px;
+  border-radius: 30px;
+  box-shadow: 0 0 10px black;
+
+}
+
+.workout-in-progress-header {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+
+  .timer {
+    margin-left: auto;
+  }
+
+  .end-workout {
+    margin-left: 10px;
+    background: red;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+/************ WorkoutTable.tsx ***********/
+
+.workout-table-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px;
+  border-bottom: 1px solid black;
+
+  .exercise-column-header {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+  }
+}
+
+.workout-table-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid black;
+
+  .exercise-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+
+    .exercise-title {
+      font-weight: bold;
+    }
+
+    .exercise-number-input {
+      background: lightgrey;
+      border: none;
+      border-radius: 10px;
+      width: 80px;
+      height: 20px;
+      padding: 5px 5px 5px 15px;
+      
+      &:not(:last-child) {
+        margin-bottom: 15px;
+      }
+    }
+
+    .exercise-checkbox-input { 
+      height: 20px;
+      width: 20px;
+
+      &:not(:last-child) {
+        margin-bottom: 15px;
+      }
+    }
+  }
+}
+
+.add-exercise-button-container {
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+
+  .add-exercise-button {
+    background: var(--primary-color);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+  }
+}
 
 /************ Spinner ***********/
 .spinner {
