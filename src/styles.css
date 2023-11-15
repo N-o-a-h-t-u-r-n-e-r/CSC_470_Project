@@ -305,6 +305,14 @@ body {
   top: 15px;
 }
 
+input {
+  background-color: transparent;
+  border: black;
+  height: 100%;
+  font-size: 1.25rem;
+  width: 100%;
+}
+
 /************ Spinner ***********/
 .spinner {
   animation: rotate 2s linear infinite;
