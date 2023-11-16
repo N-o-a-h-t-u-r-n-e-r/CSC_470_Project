@@ -1,13 +1,13 @@
 export interface Exercise {
     [key: string]: any;
-    Exercise_ID: number;
-    User_ID: number;
+    ExerciseID: number;
+    UserID: number;
     Title: string;
     Description: string;
-    Muscle_Group: string;
-    Tutorial_ID: number;
+    MuscleGroup: string;
+    TutorialID: number;
     Date: Date;
-    Set_IDs: string;
-    RPE_Target: number | undefined;
-    User_Exercise_Record_IDs: string;
+    SetIDs: string;
+    RPETarget: number | undefined;
+    UserExerciseRecordIDs: string;
 }

@@ -1,6 +1,6 @@
-export interface set {
+export interface Set {
     [key: string]: any;
-    Set_ID: number;
-    Number_Reps: number;
+    SetID: number;
+    NumberReps: number;
     Weight: number;
 }

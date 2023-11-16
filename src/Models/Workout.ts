@@ -1,11 +1,11 @@
 export interface Workout {
     [key: string]: any;
-    Workout_ID: number;
-    User_ID: number;
+    WorkoutID: number;
+    UserID: number;
     Title: string;
     Description: string;
     Date: Date;
-    Exercise_IDs: string;
-    Time_Elapsed: Date;
-    Preset_Workout_ID: number | undefined;
+    Exercise_Ds: string;
+    TimeElapsed: Date;
+    PresetWorkoutID: number | undefined;
 }
