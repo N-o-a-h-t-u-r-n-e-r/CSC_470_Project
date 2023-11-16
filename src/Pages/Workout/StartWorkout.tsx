@@ -8,11 +8,12 @@ interface Props {
 
 const StartWorkout = (props: Props) => {
     const [displayWorkoutInProgress, setDisplayWorkoutInProgress] = useState(false);
+    const [selectedWorkout, setSelectedWorkout] = useState(undefined);
 
     return(
         <>
             {displayWorkoutInProgress ?
-                <WorkoutInProgress />
+                <WorkoutInProgress workout={selectedWorkout}/>
             :
                 <div className="start-workout-container">
                     <div className="start-workout-header">

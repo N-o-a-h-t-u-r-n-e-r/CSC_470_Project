@@ -12,14 +12,11 @@ interface Props {
 const WorkoutTable = (props: Props) => {
     const [exercises, setExercises] = useState<Exercise[]>([]);
     const exerciseManager = ExerciseManager();
-    const [buttonPopup, setButtonPopup] = useState(false);
-
-    useEffect(() => {
-        console.log(exerciseManager.getExercises());
-    }, [props.existingWorkout])
+    const [showExerciseSearch, setShowExerciseSearch] = useState(false);
 
     return(
         <>
+            {showExerciseSearch && <ExerciseSearch setShowExerciseSearch={setShowExerciseSearch} />}
             <div className="workout-table-header">
                 <h3 className="exercise-column-header">Exercise</h3>
                 <h3 className="exercise-column-header">Rep Goal</h3>
@@ -49,8 +46,7 @@ const WorkoutTable = (props: Props) => {
             </div>
 
             <div className="add-exercise-button-container">
-                <button className="add-exercise-button" onClick={() => setButtonPopup(true)}>Add Exercise</button>
-                <ExerciseSearch trigger={buttonPopup} setTrigger={setButtonPopup} />
+                <button className="add-exercise-button" onClick={() => setShowExerciseSearch(true)}>Add Exercise</button>
             </div>
         </>
     );

@@ -23,13 +23,15 @@ interface Props {
 
 }
 
-const Reports = (props: Props) => {
+const WorkoutCompletedReport = (props: Props) => {
 
     //Display time in a HH:MM:SS fashion from a still number.
     const hours = Math.floor(props.time / 3600);
     const minutes = Math.floor((props.time % 3600) / 60);
     const seconds = props.time % 60;
     const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+    //const [workout, setWorkout] = useState(props.workout);
 
     return (props.trigger) ? (
         <div className="reports-popup-box">
@@ -90,7 +92,7 @@ const Reports = (props: Props) => {
     ) : null;
 }
 
-export default Reports;
+export default WorkoutCompletedReport;
 
 
 /* need to import usestate for button

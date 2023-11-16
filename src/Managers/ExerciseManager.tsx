@@ -1,20 +1,39 @@
 import { Exercise } from "../Models/Exercise";
 
-import { getDocs, collection } from "@firebase/firestore"
+import { addDoc, updateDoc, getDocs, deleteDoc, collection } from "@firebase/firestore"
 import { firestore } from "../firebase_setup/firebase"
 
 function ExerciseManager(){
+    const ExerciseCollectionRef = collection(firestore, "Exercise");
+
+    const saveExercise = async (exercise: Exercise) => {
+        try {
+            return await addDoc(ExerciseCollectionRef, exercise);
+        } catch (exception) {
+            console.error("Error saving exercise: ", exception );
+        }
+    }
+
+    const updateExercise = async (exerciseID: number) => {
+        //updateDoc
+    }
 
     const getExercises = async () => {
-        const ExerciseCollectionRef = collection(firestore, "Exercise") 
+        try {
+            return await getDocs(ExerciseCollectionRef).then((querySnapshot: any)=>{               
+                return querySnapshot.docs.map((doc: any) => ({...doc.data()}));
+            })
+        } catch (exception) {
+            console.error("Error getting exercises: ", exception );
+        }
+    }
 
-        return await getDocs(ExerciseCollectionRef).then((querySnapshot: any)=>{               
-            return querySnapshot.docs.map((doc: any) => ({...doc.data()}));
-        })
+    const deleteExercise = async (exerciseID: number) => {
+        //deleteDoc
     }
 
     return {
-        getExercises
+        
     }
 }
 
