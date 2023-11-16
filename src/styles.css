@@ -145,17 +145,66 @@ body {
 /************ StartWorkout.tsx ***********/
 
 .start-workout-container {
-  
-  .start-workout-header {
+   
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    padding: 200px;
+    width: 90%;
+    height: 90%;
+    filter: drop-shadow(lightgrey 0 0px 5px);
+    border: 0px solid black;
+    border-radius: 50px;
+   
 
+  .start-workout-header {
+  
+    position: absolute;
+    width: 95%;
+    top: 5%;
+    padding: 5px 50px;
+    filter: drop-shadow(lightgrey -1px 3px);
+    
   }
 
   .start-workout-body {
 
+ 
+    position: absolute;
+    border-block: 5px solid black;
+    writing-mode: horizontal-tb;
+    width: 95%;
+    height: 60%;
+    padding: 50px 50px;
+    filter: drop-shadow(lightgrey -1px 3px);
+
+
   }
 
   .start-blank-workout-button {
+    
+    position:absolute;
+    align-items: center;
+    justify-content: center;
+    bottom: 5%;
+    padding: 5px 20px;
+    filter: drop-shadow(lightgrey -4px 4px);
 
+
+  .nav-buttons {
+    color: white;
+    background: var(--primary-color);
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+      color: rgb(209, 209, 209);
+      border-color: var(--primary-color);
+    }
+  }
   }
 }
 
