@@ -1,21 +1,29 @@
+import { useState } from "react";
+
+import WorkoutInProgress from "./WorkoutInProgress";
+
 interface Props {
 
 }
 
 const StartWorkout = (props: Props) => {
+    const [displayWorkoutInProgress, setDisplayWorkoutInProgress] = useState(false);
 
     return(
-        <div className="start-workout-container">
-            <div className="start-workout-header">
+        <>
+            {displayWorkoutInProgress && <WorkoutInProgress />}
+            <div className="start-workout-container">
+                <div className="start-workout-header">
                 <h1>Start Workout</h1>
+                </div>
+                <div className="start-workout-body">
+                    <button onClick={() => setDisplayWorkoutInProgress(!displayWorkoutInProgress)}>Start Blank Workout</button>
+                </div>
+                <div className="start-blank-workout-button">
+                    
+                </div>
             </div>
-            <div className="start-workout-body">
-                <h2>Presets:</h2>
-            </div>
-            <div className="start-blank-workout-button">
-                <button className='nav-buttons'><h3>Start Blank Workout</h3></button>
-            </div>
-        </div>
+        </>
     );
 
 }
