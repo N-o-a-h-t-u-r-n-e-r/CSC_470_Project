@@ -15,15 +15,15 @@ const StartWorkout = (props: Props) => {
             {displayWorkoutInProgress ?
                 <WorkoutInProgress workout={selectedWorkout}/>
             :
-                <div className="start-workout-container">
-                    <div className="start-workout-header">
+                <div className="container">
+                    <div className="header start-workout-header">
                         <h1>Start Workout</h1>
                     </div>
-                    <div className="start-workout-body">
+                    <div className="body start-workout-body">
                         
                     </div>
-                    <div className="start-blank-workout-button">
-                        <button onClick={() => setDisplayWorkoutInProgress(!displayWorkoutInProgress)}>Start Blank Workout</button>
+                    <div className="footer start-blank-workout-button-container">
+                        <button className="start-blank-workout-button" onClick={() => setDisplayWorkoutInProgress(!displayWorkoutInProgress)}>Start Blank Workout</button>
                     </div>
                 </div>
             }

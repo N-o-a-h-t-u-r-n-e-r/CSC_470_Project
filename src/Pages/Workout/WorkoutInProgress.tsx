@@ -23,13 +23,15 @@ const WorkoutInProgress = (props: Props) => {
 
     return(
         <>
-            <div className="workout-in-progress-container">
-                <div className="workout-in-progress-header">
+            <div className="container workout-in-progress-container">
+                <div className="header workout-in-progress-header">
                     <h2>Workout</h2>
                     <h2 className="timer">{seconds}</h2>
                     <button className="end-workout">END</button>
                 </div>
-                <WorkoutTable existingWorkout={props.workout}/>
+                <div className="body">
+                    <WorkoutTable existingWorkout={props.workout}/>
+                </div>
             </div>
             {/* {showWorkoutCompletedReport && <WorkoutCompletedReport  />} */}
         </>
