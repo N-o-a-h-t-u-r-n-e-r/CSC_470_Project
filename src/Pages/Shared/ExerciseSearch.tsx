@@ -34,6 +34,9 @@ const ExerciseSearch = (props: Props) => {
                         <div>Skull Crushers</div>
                         <div>Lat Pull Down</div>
                     </div>
+                    <div className="add-exercise-search-button-container">
+                    <button className="add-exercise-search-button">Add Exercise</button>
+                    </div>
                 </div>
             </div>
         </div>

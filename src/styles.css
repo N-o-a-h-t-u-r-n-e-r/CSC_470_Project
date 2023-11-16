@@ -313,6 +313,25 @@ input {
   width: 100%;
 }
 
+.add-exercise-search-button-container {
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  margin-top: 1rem;
+
+  .add-exercise-search-button {
+    background: var(--primary-color);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+
 /****** SearchResultsList.tsx **********/
 
 .results-list {
