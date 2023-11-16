@@ -26,7 +26,8 @@ function ExerciseManager(){
     }
 
     return {
-        GetExercisesFromIDString
+        GetExercisesFromIDString,
+        getExercises
     }
 }
 

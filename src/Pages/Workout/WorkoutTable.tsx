@@ -15,10 +15,11 @@ const WorkoutTable = (props: Props) => {
     const [buttonPopup, setButtonPopup] = useState(false);
 
     useEffect(() => {
-        console.log(props.existingWorkout);
-        if(props.existingWorkout !== undefined){
-            setExercises(exerciseManager.GetExercisesFromIDString(props.existingWorkout.Exercise_IDs))
-        }
+        console.log(exerciseManager.getExercises());
+        // console.log(props.existingWorkout);
+        // if(props.existingWorkout !== undefined){
+        //     setExercises(exerciseManager.GetExercisesFromIDString(props.existingWorkout.Exercise_IDs))
+        // }
     }, [props.existingWorkout])
 
     return(

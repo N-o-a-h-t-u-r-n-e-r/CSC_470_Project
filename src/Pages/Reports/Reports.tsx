@@ -34,15 +34,6 @@ const Reports = (props: Props) => {
     const seconds = props.time % 60;
     const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-
-
-    
-    
-
-    
-
-    
-
     return (props.trigger) ? (
         <div className="reports-popup-box">
             <div className="reports-box">

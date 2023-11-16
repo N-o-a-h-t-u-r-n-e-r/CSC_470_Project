@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { firestore } from "../../firebase_setup/firebase";
 import { getDocs, collection } from "@firebase/firestore"
 import ExerciseManager from "../../Managers/ExerciseManager";
