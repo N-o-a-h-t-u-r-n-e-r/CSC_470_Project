@@ -10,7 +10,7 @@ setTrigger: (value: boolean) => void;
 }
 
 const ExerciseSearch = (props: Props) => {
-    
+
     const [input, setInput] = useState("");
     const [results, setResults] = useState("");
 
@@ -23,11 +23,21 @@ const ExerciseSearch = (props: Props) => {
                     value = {input}
                     onChange={(e) => setInput(e.target.value)}
                     />
+                    <div className="results-list">
+                        <div>Squat</div>
+                        <div>Deadlift</div>
+                        <div>Bench</div>
+                        <div>Bicep Curl</div>
+                        <div>Tricep Extension</div>
+                        <div>Pull Ups</div>
+                        <div>Chin Ups</div>
+                        <div>Skull Crushers</div>
+                        <div>Lat Pull Down</div>
+                    </div>
                 </div>
             </div>
         </div>
     ): null;
 
 }
-
 export default ExerciseSearch;
