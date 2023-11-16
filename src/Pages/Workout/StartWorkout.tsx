@@ -14,10 +14,10 @@ const StartWorkout = (props: Props) => {
             {displayWorkoutInProgress && <WorkoutInProgress />}
             <div className="start-workout-container">
                 <div className="start-workout-header">
-                
+                <h1>Start Workout</h1>
                 </div>
                 <div className="start-workout-body">
-                    <button onClick={() => setDisplayWorkoutInProgress(!displayWorkoutInProgress)}>CLICK ME</button>
+                    <button onClick={() => setDisplayWorkoutInProgress(!displayWorkoutInProgress)}>Start Blank Workout</button>
                 </div>
                 <div className="start-blank-workout-button">
                     
