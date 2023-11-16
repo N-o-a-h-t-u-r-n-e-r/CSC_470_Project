@@ -7,8 +7,8 @@ import "./styles.css";
 import Layout from "./Pages/Layout/Layout";
 import App from "./app";
 import StartWorkout from './Pages/Workout/StartWorkout';
-import WorkoutPlans from './Pages/Progress/WorkoutPlans';
-import UserProgress from './Pages/Plans/UserProgress';
+import WorkoutPlans from './Pages/Plans/WorkoutPlans';
+import UserProgress from './Pages/Progress/UserProgress';
 
 const container = document.getElementById('root');
 const root = createRoot(container!); 

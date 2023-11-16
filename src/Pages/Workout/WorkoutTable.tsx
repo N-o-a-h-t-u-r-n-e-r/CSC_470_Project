@@ -16,10 +16,6 @@ const WorkoutTable = (props: Props) => {
 
     useEffect(() => {
         console.log(exerciseManager.getExercises());
-        // console.log(props.existingWorkout);
-        // if(props.existingWorkout !== undefined){
-        //     setExercises(exerciseManager.GetExercisesFromIDString(props.existingWorkout.Exercise_IDs))
-        // }
     }, [props.existingWorkout])
 
     return(
@@ -54,10 +50,7 @@ const WorkoutTable = (props: Props) => {
 
             <div className="add-exercise-button-container">
                 <button className="add-exercise-button" onClick={() => setButtonPopup(true)}>Add Exercise</button>
-                <ExerciseSearch
-                 trigger={buttonPopup}
-                 setTrigger={setButtonPopup} 
-                />
+                <ExerciseSearch trigger={buttonPopup} setTrigger={setButtonPopup} />
             </div>
         </>
     );

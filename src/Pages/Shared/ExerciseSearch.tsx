@@ -5,8 +5,8 @@ import ExerciseManager from "../../Managers/ExerciseManager";
 import { setUncaughtExceptionCaptureCallback } from "process";
 
 interface Props {
-trigger:boolean;
-setTrigger: (value: boolean) => void;
+    trigger:boolean;
+    setTrigger: (value: boolean) => void;
 }
 
 const ExerciseSearch = (props: Props) => {
@@ -19,10 +19,7 @@ const ExerciseSearch = (props: Props) => {
             <div className="exercise-search-box">    
                 <button className="exercise-search-button" onClick={() => props.setTrigger(false)}> X </button>
                 <div className="input-wrapper">
-                    <input placeholder="Type to search..." 
-                    value = {input}
-                    onChange={(e) => setInput(e.target.value)}
-                    />
+                    <input placeholder="Type to search..." value = {input} onChange={(e) => setInput(e.target.value)} />
                     <div className="results-list">
                         <div>Squat</div>
                         <div>Deadlift</div>
@@ -35,7 +32,7 @@ const ExerciseSearch = (props: Props) => {
                         <div>Lat Pull Down</div>
                     </div>
                     <div className="add-exercise-search-button-container">
-                    <button className="add-exercise-search-button">Add Exercise</button>
+                        <button className="add-exercise-search-button">Add Exercise</button>
                     </div>
                 </div>
             </div>

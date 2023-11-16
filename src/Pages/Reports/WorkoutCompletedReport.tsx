@@ -23,9 +23,6 @@ interface Props {
 
 }
 
-
-
-
 const Reports = (props: Props) => {
 
     //Display time in a HH:MM:SS fashion from a still number.
@@ -41,58 +38,53 @@ const Reports = (props: Props) => {
                 <div className="reports-header">
                     <h1>Workout "{props.workoutTitle}" completed!</h1>
                 </div>
-                    <div className="reports-divider"></div>
-                    
-                    
-                    <div className="reports-time-left">
-                        <p>Time:</p>
-                    </div>
-
-                    <div className="reports-time-right">
-                        <p>{formattedTime}</p>
-                    </div>
-                    
-                    <div className="reports-exercise-list-header">
-                        <p>Exercises Completed:</p>
-                    </div>
-                   
-                    <div className="reports-exercise-list">
-                        {props.exercises.map((exercise, index) => (
-                            <ul key={index}>
-                                <div className="exercise-info">
-                                    <div className="list-title">{exercise.title}:</div>
-                                    <div className="setsNreps">{exercise.sets}x{exercise.reps}</div>
-                                </div>
-                            </ul>
-                        ))}
-                    </div>
-
-                    {props.pr !== null && props.pr.length > 0 && (
-                        <>
-                            <div className="reports-exercise-pr">
-                                <p>PRs set:</p>
-                            </div>
-                            {props.pr.map((prs, index) => (
-                            <ul key={index}>
-                                
-                                <div className="pr-info">
-                                    <div className="pr-title"> 
-                                        {prs.title}: 
-                                    </div>
-                                    <div className="pr-content">
-                                        {prs.weight}lb x {prs.volume} - {prs.category}
-                                    </div>
-                                </div>
-                            </ul>
-                            ))}
-
-                        </>
-                    )}
-
-                    
-
-
+                <div className="reports-divider"></div>
                 
+                
+                <div className="reports-time-left">
+                    <p>Time:</p>
+                </div>
+
+                <div className="reports-time-right">
+                    <p>{formattedTime}</p>
+                </div>
+                
+                <div className="reports-exercise-list-header">
+                    <p>Exercises Completed:</p>
+                </div>
+                
+                <div className="reports-exercise-list">
+                    {props.exercises.map((exercise, index) => (
+                        <ul key={index}>
+                            <div className="exercise-info">
+                                <div className="list-title">{exercise.title}:</div>
+                                <div className="setsNreps">{exercise.sets}x{exercise.reps}</div>
+                            </div>
+                        </ul>
+                    ))}
+                </div>
+
+                {props.pr !== null && props.pr.length > 0 && (
+                    <>
+                        <div className="reports-exercise-pr">
+                            <p>PRs set:</p>
+                        </div>
+                        {props.pr.map((prs, index) => (
+                        <ul key={index}>
+                            
+                            <div className="pr-info">
+                                <div className="pr-title"> 
+                                    {prs.title}: 
+                                </div>
+                                <div className="pr-content">
+                                    {prs.weight}lb x {prs.volume} - {prs.category}
+                                </div>
+                            </div>
+                        </ul>
+                        ))}
+
+                    </>
+                )}                
             </div>
         </div>
     ) : null;
