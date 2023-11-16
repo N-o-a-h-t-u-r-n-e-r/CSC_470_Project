@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Workout } from "../../Models/Workout";
 import { Exercise } from "../../Models/Exercise";
 import ExerciseManager from "../../Managers/ExerciseManager";
+import ExerciseSearch from "../Shared/ExerciseSearch";
 
 interface Props {
     existingWorkout: Workout | undefined,
@@ -11,6 +12,7 @@ interface Props {
 const WorkoutTable = (props: Props) => {
     const [exercises, setExercises] = useState<Exercise[]>([]);
     const exerciseManager = ExerciseManager();
+    const [buttonPopup, setButtonPopup] = useState(false);
 
     useEffect(() => {
         console.log(props.existingWorkout);
@@ -50,11 +52,14 @@ const WorkoutTable = (props: Props) => {
             </div>
 
             <div className="add-exercise-button-container">
-                <button className="add-exercise-button">Add Exercise</button>
+                <button className="add-exercise-button" onClick={() => setButtonPopup(true)}>Add Exercise</button>
+                <ExerciseSearch
+                 trigger={buttonPopup}
+                 setTrigger={setButtonPopup} 
+                />
             </div>
         </>
     );
-
 }
 
 export default WorkoutTable;
