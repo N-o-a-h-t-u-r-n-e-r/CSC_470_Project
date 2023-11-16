@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import { AuthContext } from '../../Context/AuthContext';
 import Bars from '../../Assets/Bars';
-import { Navigate } from 'react-router-dom';
 
 interface Props {
     

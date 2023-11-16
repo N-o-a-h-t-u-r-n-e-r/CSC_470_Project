@@ -11,7 +11,7 @@ function ExerciseManager(){
         const user = User;
         console.log(user);
 
-        const ids = idString.split(',');
+        //const ids = idString.split(',');
         console.log(getExercises())
 
         return oReturn;
