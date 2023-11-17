@@ -1,7 +1,7 @@
 export interface Preset_Workout {
     [key: string]: any;
     PresetWorkoutID: number;
-    UserID: number;
+    UserID: string;
     Title: string;
     Description: string;
     Date: Date;

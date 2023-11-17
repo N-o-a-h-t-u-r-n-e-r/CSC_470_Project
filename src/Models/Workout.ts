@@ -1,7 +1,7 @@
 export interface Workout {
     [key: string]: any;
     WorkoutID: number;
-    UserID: number;
+    UserID: string;
     Title: string;
     Description: string;
     Date: Date;

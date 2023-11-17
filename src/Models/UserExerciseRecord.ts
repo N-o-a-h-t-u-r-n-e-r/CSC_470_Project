@@ -2,7 +2,7 @@ export interface UserExerciseRecord {
     [key: string]: any;
     UserExerciseRecordID: number;
     ExerciseID: number;
-    UserID: number;
+    UserID: string;
     MaxWeight: number;
     MaxWeightReps: number;
     MaxWeightDate: Date;

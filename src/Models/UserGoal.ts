@@ -1,7 +1,7 @@
 export interface UserGoal {
     [key: string]: any;
     GoalID: number;
-    UserID: number;
+    UserID: string;
     Title: string;
     TargetWeight: number;
     TargetReps: number;

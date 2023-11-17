@@ -123,6 +123,16 @@ body {
   }
 }
 
+.popup-container{
+  position: absolute;
+  background: rgba(0, 0, 0, 0.6);
+  width: 100vw;
+  height: 100vh;
+  top: -89px;
+  left: -41px;
+  display: flex;
+}
+
 /************ StartWorkout.tsx ***********/
 
   .start-workout-header {
@@ -261,13 +271,13 @@ body {
 
 .exercise-search-box {
   position: fixed;
+  top: 10%;
   left: 25%;
   width: 50%;
   background-color: #fff;
-  border: 1px solid darkgray;
   border-radius: 4px;
   padding: 20px;
-  filter: drop-shadow(lightgray 0 0px 20px);
+  box-shadow: 0 0px 20px black;
 
   .search-input {
     width: 100%;
@@ -317,6 +327,75 @@ body {
 }
 
 .exercise-search-button {
+  position: absolute;
+  right: -2%;
+  top: -4%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  border: 1px solid darkgray;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/****** ExerciseAdd.tsx **********/
+
+.exercise-add-box {
+  position: fixed;
+  top: 10%;
+  left: 25%;
+  width: 50%;
+  background-color: #fff;
+  border: 1px solid darkgray;
+  border-radius: 4px;
+  padding: 20px;
+  box-shadow: 0 0px 20px black;
+
+  .exercise-inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    .exercise-input-label {
+      display: inline-flex;
+      align-items: center;
+      width: 100%;
+      padding-top: 10px;
+
+      .exercise-input {
+        width: 60%;
+        margin-left: 10px;
+        padding: 4px;
+      }
+
+      .exercise-input-label-text {
+        width: 40%;
+      }
+    }
+  }
+
+  .add-button-container {
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+    margin-top: 20px;
+  
+    .add-button {
+      background: var(--primary-color);
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+    }
+  }
+}
+
+.exercise-add-button {
   position: absolute;
   right: -2%;
   top: -4%;
