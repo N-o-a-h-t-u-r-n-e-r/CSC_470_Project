@@ -20,6 +20,7 @@ body {
   min-height: 100vh;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 18px;
+  overflow: hidden;
 }
 
 /************ Layout.tsx ***********/
@@ -123,14 +124,20 @@ body {
   }
 }
 
-.popup-container{
-  position: absolute;
-  background: rgba(0, 0, 0, 0.6);
-  width: 100vw;
-  height: 100vh;
-  top: -89px;
-  left: -41px;
-  display: flex;
+.popup-box {
+  position: fixed;
+  top: 10%;
+  left: 25%;
+  width: 50%;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  box-shadow: 0 0px 100px black;
+  pointer-events: auto;
+}
+
+.unclickable {
+  pointer-events: none;
 }
 
 /************ StartWorkout.tsx ***********/
@@ -207,45 +214,63 @@ body {
   }
 }
 
-.workout-table-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 10px;
-  padding-bottom: 10px;
+.workout-table-row-container {
   border-bottom: 1px solid black;
+  margin-bottom: 5px;
+  padding: 10px;
 
-  .exercise-column {
+  .workout-table-row {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 5px;
+  
+    .exercise-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 150px;
+  
+      .exercise-title {
+        font-weight: bold;
+      }
+  
+      .exercise-number-input {
+        background: lightgrey;
+        border: none;
+        border-radius: 10px;
+        width: 80px;
+        height: 20px;
+        padding: 5px 5px 5px 15px;
+        
+        &:not(:last-child) {
+          margin-bottom: 15px;
+        }
+      }
+  
+      .exercise-checkbox-input { 
+        height: 20px;
+        width: 20px;
+  
+        &:not(:last-child) {
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
+
+  .workout-table-add-set {
+    display: inline-flex;
     justify-content: center;
-    width: 150px;
+    align-items: center;
+    width: 100%;
 
-    .exercise-title {
-      font-weight: bold;
-    }
-
-    .exercise-number-input {
-      background: lightgrey;
-      border: none;
-      border-radius: 10px;
-      width: 80px;
-      height: 20px;
-      padding: 5px 5px 5px 15px;
-      
-      &:not(:last-child) {
-        margin-bottom: 15px;
-      }
-    }
-
-    .exercise-checkbox-input { 
-      height: 20px;
-      width: 20px;
-
-      &:not(:last-child) {
-        margin-bottom: 15px;
-      }
+    .workout-table-add-set-button {
+      padding: 0 6px;
+      border: 2px solid lightgray;
+      border-radius: 5px;
+      font-size: 1.4rem;
     }
   }
 }
@@ -270,14 +295,6 @@ body {
 /****** ExerciseSearch.tsx **********/
 
 .exercise-search-box {
-  position: fixed;
-  top: 10%;
-  left: 25%;
-  width: 50%;
-  background-color: #fff;
-  border-radius: 4px;
-  padding: 20px;
-  box-shadow: 0 0px 20px black;
 
   .search-input {
     width: 100%;
@@ -342,15 +359,6 @@ body {
 /****** ExerciseAdd.tsx **********/
 
 .exercise-add-box {
-  position: fixed;
-  top: 10%;
-  left: 25%;
-  width: 50%;
-  background-color: #fff;
-  border: 1px solid darkgray;
-  border-radius: 4px;
-  padding: 20px;
-  box-shadow: 0 0px 20px black;
 
   .exercise-inputs {
     display: flex;

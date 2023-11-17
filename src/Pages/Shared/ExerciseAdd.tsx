@@ -30,7 +30,7 @@ const ExerciseAdd = (props: Props) => {
     }
 
     return(
-        <div className="exercise-add-box">    
+        <div className="popup-box exercise-add-box">    
             <button className="exercise-add-button" onClick={() => props.setShowExerciseAdd(false)}>x</button>
             <div>
                 <h2>Add New Exercise</h2>

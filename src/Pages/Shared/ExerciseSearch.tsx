@@ -12,7 +12,7 @@ interface Props {
 const ExerciseSearch = (props: Props) => {
 
     const [searchString, setSearchString] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [exercises, setExercises] = useState<Exercise[]>([]);
     const [showExerciseAdd, setShowExerciseAdd] = useState(false);
 
@@ -39,28 +39,28 @@ const ExerciseSearch = (props: Props) => {
     }, [])
     
     return(
-        <div className="popup-container">  
+        <>  
             { showExerciseAdd ?
                 <ExerciseAdd setShowExerciseAdd={(showExerciseSearch: boolean) => setShowExerciseAdd(showExerciseSearch)} returnExercise={handleExerciseAddReturn}/>
             :
-                <div className="exercise-search-box">    
+                <div className='popup-box exercise-search-box'>    
                     <button className="exercise-search-button" onClick={() => props.setShowExerciseSearch(false)}>x</button>
                     <div>
                         <input className="search-input" placeholder="Type to search..." value={searchString} onChange={(e) => setSearchString(e.target.value)} />
                             <div className="results-list">
-                            {loading ?
+                            {exercises.length > 0 ?
                                 <div>
-                                    <svg className="spinner" viewBox="0 0 50 50">
-                                        <circle className="path" cx="25" cy="25" r="20" fill="none" strokeWidth="5"></circle>
-                                    </svg>
+                                    {exercises.filter(x => x.Title.includes(searchString)).map((item, index) => (
+                                        <div key={`result-option-${index}`} className="result-option">{item.Title}</div>
+                                    ))}
                                 </div>
                             :
                                 <>
-                                    {exercises.length > 0 ?
+                                    {loading ?
                                         <div>
-                                            {exercises.map((item, index) => (
-                                                <div key={`result-option-${index}`} className="result-option">{item.Title}</div>
-                                            ))}
+                                            <svg className="spinner" viewBox="0 0 50 50">
+                                                <circle className="path" cx="25" cy="25" r="20" fill="none" strokeWidth="5"></circle>
+                                            </svg>
                                         </div>
                                     :
                                         <div>
@@ -76,7 +76,7 @@ const ExerciseSearch = (props: Props) => {
                     </div>
                 </div>
             }
-        </div>
+        </>
     );
 
 }

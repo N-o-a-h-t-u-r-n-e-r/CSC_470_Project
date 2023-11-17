@@ -5,7 +5,7 @@ export interface Workout {
     Title: string;
     Description: string;
     Date: Date;
-    Exercise_Ds: string;
+    ExerciseIDs: string;
     TimeElapsed: Date;
     PresetWorkoutID: number | undefined;
 }

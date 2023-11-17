@@ -12,6 +12,7 @@ const WorkoutInProgress = (props: Props) => {
     const [seconds, setSeconds] = useState(0);
     const [workout, setWorkout] = useState(props.workout);
     const [showWorkoutCompletedReport, setShowWorkoutCompletedReport] = useState(false);
+    const [showExerciseSearch, setShowExerciseSearch] = useState(false);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -23,17 +24,16 @@ const WorkoutInProgress = (props: Props) => {
 
     return(
         <>
-            <div className="container workout-in-progress-container">
+            <div className={`container workout-in-progress-container ${showExerciseSearch ? 'unclickable' : ''}`} >
                 <div className="header workout-in-progress-header">
                     <h2>Workout</h2>
-                    <h2 className="timer">{seconds}</h2>
+                    <h2 className="timer">{new Date(seconds * 1000).toISOString().slice(11, 19)}</h2>
                     <button className="end-workout">END</button>
                 </div>
                 <div className="body">
-                    <WorkoutTable existingWorkout={props.workout}/>
+                    <WorkoutTable existingWorkout={props.workout} setShowExerciseSearch={setShowExerciseSearch}/>
                 </div>
             </div>
-            {/* {showWorkoutCompletedReport && <WorkoutCompletedReport  />} */}
         </>
     );
 
