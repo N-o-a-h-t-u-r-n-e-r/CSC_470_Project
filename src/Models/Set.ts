@@ -1,6 +1,6 @@
 export interface Set {
     [key: string]: any;
-    SetID: number;
+    SetID: string;
     NumberReps: number;
     Weight: number;
 }

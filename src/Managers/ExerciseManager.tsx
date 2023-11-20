@@ -51,7 +51,21 @@ function ExerciseManager(){
         } catch (exception) {
             console.error("Error getting exercises: ", exception );
         }
-    }     
+    } 
+    
+    const getGlobalExercises = async () => {
+        try {
+            const searchQuery = query(ExerciseCollectionRef, where("UserID", "==", "GLOBAL"));
+            const queryResults = await getDocs(searchQuery);
+            
+            return queryResults.docs.map((doc: any) => {
+                const exerciseData: Exercise = doc.data() as Exercise;
+                return exerciseData;
+            });
+        } catch (exception) {
+            console.error("Error getting exercises: ", exception );
+        }
+    }    
 
     const deleteExercise = async (exerciseID: number) => {
         //deleteDoc

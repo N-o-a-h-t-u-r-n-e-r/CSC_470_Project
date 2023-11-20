@@ -108,6 +108,7 @@ body {
   flex-direction: column;
   flex-grow: 1;
   width: 90%;
+  max-height: 85vh;
   margin: 4% 0;
   background: #fff;
   filter: drop-shadow(darkgray 0 0px 5px);
@@ -118,6 +119,7 @@ body {
   }
   .body {
     flex-grow: 1;
+    overflow: auto;
   }
   .footer {
 
@@ -271,6 +273,7 @@ body {
       border: 2px solid lightgray;
       border-radius: 5px;
       font-size: 1.4rem;
+      cursor: pointer;
     }
   }
 }
@@ -451,7 +454,7 @@ body {
 }
 
 /************ Spinner ***********/
-.spinner {
+.spinner-absolute {
   animation: rotate 2s linear infinite;
   z-index: 2;
   position: absolute;
@@ -460,13 +463,25 @@ body {
   margin: -25px 0 0 -25px;
   width: 50px;
   height: 50px;
-  
-  & .path {
+
+  .path {
     stroke: #000;
     stroke-linecap: round;
     animation: dash 1.5s ease-in-out infinite;
   }
+}
+
+.spinner {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  animation: rotate 2s linear infinite;
   
+  .path {
+    stroke: #000;
+    stroke-linecap: round;
+    animation: dash 1.5s ease-in-out infinite;
+  }
 }
 
 @keyframes rotate {

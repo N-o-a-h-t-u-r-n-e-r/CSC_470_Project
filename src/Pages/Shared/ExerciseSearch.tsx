@@ -7,6 +7,7 @@ import { Exercise } from "../../Models/Exercise";
 
 interface Props {
     setShowExerciseSearch: (showExerciseSearch: boolean) => void;
+    handleAddExercise: (exerciseToAdd: Exercise) => void;
 }
 
 const ExerciseSearch = (props: Props) => {
@@ -27,11 +28,10 @@ const ExerciseSearch = (props: Props) => {
         setLoading(true);
         exerciseManager.getExercises().then((result) => {
             if(result){
-                console.log(result);
                 setExercises(result);
             }
+            setLoading(false);
         });
-        setLoading(false);
     }
 
     useEffect(() => {
@@ -48,27 +48,23 @@ const ExerciseSearch = (props: Props) => {
                     <div>
                         <input className="search-input" placeholder="Type to search..." value={searchString} onChange={(e) => setSearchString(e.target.value)} />
                             <div className="results-list">
-                            {exercises.length > 0 ?
-                                <div>
-                                    {exercises.filter(x => x.Title.includes(searchString)).map((item, index) => (
-                                        <div key={`result-option-${index}`} className="result-option">{item.Title}</div>
-                                    ))}
-                                </div>
-                            :
-                                <>
-                                    {loading ?
-                                        <div>
-                                            <svg className="spinner" viewBox="0 0 50 50">
+                                {exercises.length > 0 ?
+                                    <div>
+                                        {exercises.filter(x => x.Title.toLowerCase().includes(searchString.toLowerCase())).map((item, index) => (
+                                            <div key={`result-option-${index}`} className="result-option" onClick={() => props.handleAddExercise(exercises[index])}>{item.Title}</div>
+                                        ))}
+                                    </div>
+                                :
+                                    <div>
+                                        {loading ? 
+                                            <svg className="spinner-absolute" viewBox="0 0 50 50">
                                                 <circle className="path" cx="25" cy="25" r="20" fill="none" strokeWidth="5"></circle>
                                             </svg>
-                                        </div>
-                                    :
-                                        <div>
-                                            No Exercises, add an exercise to get started
-                                        </div>
-                                    }
-                                </>
-                            }
+                                        :
+                                            'No Exercises, add an exercise to get started'
+                                        } 
+                                    </div>
+                                }   
                             </div>
                         <div className="add-exercise-exercise-search-button-container">
                             <button className="add-exercise-exercise-search-button" onClick={() => setShowExerciseAdd(true)}>Add New Exercise</button>
