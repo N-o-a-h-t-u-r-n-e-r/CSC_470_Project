@@ -13,6 +13,7 @@ const WorkoutInProgress = (props: Props) => {
     const [workout, setWorkout] = useState(props.workout);
     const [showWorkoutCompletedReport, setShowWorkoutCompletedReport] = useState(false);
     const [showExerciseSearch, setShowExerciseSearch] = useState(false);
+    const [reportPopup, setReportPopup] = useState(false);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -28,12 +29,21 @@ const WorkoutInProgress = (props: Props) => {
                 <div className="header workout-in-progress-header">
                     <h2>Workout</h2>
                     <h2 className="timer">{new Date(seconds * 1000).toISOString().slice(11, 19)}</h2>
-                    <button className="end-workout">END</button>
+                    <button className="end-workout" onClick={() => setReportPopup(true)  }>END</button>
+                        
                 </div>
                 <div className="body">
                     <WorkoutTable existingWorkout={props.workout} setShowExerciseSearch={setShowExerciseSearch}/>
                 </div>
             </div>
+            <WorkoutCompletedReport
+                            pr={null}
+                            workoutTitle={null}
+                            exercises={null}
+                            time={seconds}
+                            trigger={reportPopup}
+                            setTrigger={setReportPopup}
+                        />
         </>
     );
 
