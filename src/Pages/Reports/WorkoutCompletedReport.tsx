@@ -1,4 +1,6 @@
 import React from 'react'
+import { Workout } from "../../Models/Workout";
+
 
 interface Exercise {
     title: string;
@@ -14,7 +16,8 @@ interface Prs {
 }
 
 interface Props {
-    workoutTitle: string  | null;
+    workout?: Workout;
+
     time: number;
     trigger: boolean | null;
     setTrigger: (value: boolean) => void;
@@ -25,11 +28,6 @@ interface Props {
 
 const WorkoutCompletedReport = (props: Props) => {
 
-    //Display time in a HH:MM:SS fashion from a still number.
-    const hours = Math.floor(props.time / 3600);
-    const minutes = Math.floor((props.time % 3600) / 60);
-    const seconds = props.time % 60;
-    const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
     //const [workout, setWorkout] = useState(props.workout);
 
@@ -38,8 +36,8 @@ const WorkoutCompletedReport = (props: Props) => {
             <div className="reports-box">
              <button className="reports-workout-button" onClick={() => props.setTrigger(false)}> X </button>
                 <div className="reports-header">
-                {props.workoutTitle !== null ? (
-                    <h1>Workout "{props.workoutTitle}" completed!</h1>
+                {props.workout?.Title !== undefined ? (
+                    <h1>Workout "{props.workout?.Title}" completed!</h1>
                 ) : (
                   <h1>Workout Completed</h1>
                  )}
@@ -52,7 +50,7 @@ const WorkoutCompletedReport = (props: Props) => {
                 </div>
 
                 <div className="reports-time-right">
-                    <p>{formattedTime}</p>
+                    <p>{new Date(props.time * 1000).toISOString().slice(11, 19)}</p>
                 </div>
                 
                 <div className="reports-exercise-list-header">
@@ -70,7 +68,7 @@ const WorkoutCompletedReport = (props: Props) => {
                      ))}
                   </div>
                 ) :  (
-                  <h1></h1>
+                  <div className="list-title">None</div>
                 )
               }
 
