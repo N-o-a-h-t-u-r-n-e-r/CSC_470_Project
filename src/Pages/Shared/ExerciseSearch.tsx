@@ -20,13 +20,13 @@ const ExerciseSearch = (props: Props) => {
     const exerciseManager = ExerciseManager();
 
     const handleExerciseAddReturn = () => {
-        getExercises();
+        getUserExercises();
         setShowExerciseAdd(false);
     }
 
-    const getExercises = () => {
+    const getUserExercises = () => {
         setLoading(true);
-        exerciseManager.getExercises().then((result) => {
+        exerciseManager.getUserExercises().then((result) => {
             if(result){
                 setExercises(result);
             }
@@ -35,7 +35,7 @@ const ExerciseSearch = (props: Props) => {
     }
 
     useEffect(() => {
-        getExercises();
+        getUserExercises();
     }, [])
     
     return(

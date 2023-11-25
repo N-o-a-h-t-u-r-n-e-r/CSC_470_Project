@@ -39,7 +39,7 @@ function ExerciseManager(){
         //updateDoc
     }
 
-    const getExercises = async () => {
+    const getUserExercises = async () => {
         try {
             const searchQuery = query(ExerciseCollectionRef, where("UserID", "==", user?.sub));
             const queryResults = await getDocs(searchQuery);
@@ -51,7 +51,7 @@ function ExerciseManager(){
         } catch (exception) {
             console.error("Error getting exercises: ", exception );
         }
-    } 
+    }
     
     const getGlobalExercises = async () => {
         try {
@@ -71,7 +71,7 @@ function ExerciseManager(){
         //deleteDoc
     }
 
-    return { addExercise, getExercises }
+    return { addExercise, getUserExercises }
 }
 
 export default ExerciseManager;
