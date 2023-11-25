@@ -1,6 +1,6 @@
 import { Exercise } from "../Models/Exercise";
 
-import { addDoc, updateDoc, getDocs, deleteDoc, collection, Timestamp, query, where } from "@firebase/firestore"
+import { doc, addDoc, updateDoc, getDoc, getDocs, deleteDoc, collection, Timestamp, query, where } from "@firebase/firestore"
 import { firestore } from "../firebase_setup/firebase"
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -48,6 +48,16 @@ function ExerciseManager(){
                 const exerciseData: Exercise = doc.data() as Exercise;
                 return exerciseData;
             });
+        } catch (exception) {
+            console.error("Error getting exercises: ", exception );
+        }
+    }
+
+    const getExercisebyID = async (id: string) => {
+        const docRef = doc(ExerciseCollectionRef, id);
+        try {
+            const doc = await getDoc(docRef);
+            return doc.data() as Exercise;
         } catch (exception) {
             console.error("Error getting exercises: ", exception );
         }
