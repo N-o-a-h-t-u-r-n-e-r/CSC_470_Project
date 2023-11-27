@@ -10,17 +10,26 @@ interface Props {
 
 const WorkoutInProgress = (props: Props) => {
     const [seconds, setSeconds] = useState(0);
+    const [timerRunning, setTimerRunning] = useState(true);
     const [workout, setWorkout] = useState(props.workout);
     const [showWorkoutCompletedReport, setShowWorkoutCompletedReport] = useState(false);
     const [showExerciseSearch, setShowExerciseSearch] = useState(false);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setSeconds(prevSeconds => prevSeconds + 1);
-        }, 1000);
+        if(timerRunning){
+            const interval = setInterval(() => {
+                setSeconds(prevSeconds => prevSeconds + 1);
+            }, 1000);
 
-        return () => clearInterval(interval);
-    }, []);
+            return () => clearInterval(interval);
+        }
+    }, [timerRunning]);
+
+    const stopTimer = () => {
+        setTimerRunning(false);
+    };
+
+
 
     return(
         <>
@@ -28,12 +37,25 @@ const WorkoutInProgress = (props: Props) => {
                 <div className="header workout-in-progress-header">
                     <h2>Workout</h2>
                     <h2 className="timer">{new Date(seconds * 1000).toISOString().slice(11, 19)}</h2>
-                    <button className="end-workout">END</button>
+                    <button className="end-workout" onClick={() => {
+                        setShowWorkoutCompletedReport(true);
+                        stopTimer();
+                        }
+                    }>END</button>
+                        
                 </div>
                 <div className="body">
                     <WorkoutTable existingWorkout={props.workout} setShowExerciseSearch={setShowExerciseSearch}/>
                 </div>
             </div>
+            <WorkoutCompletedReport
+                            pr={null}
+                            workout={props.workout}
+                            exercises={null}
+                            time={seconds}
+                            trigger={showWorkoutCompletedReport}
+                            setTrigger={setShowWorkoutCompletedReport}
+                        />
         </>
     );
 

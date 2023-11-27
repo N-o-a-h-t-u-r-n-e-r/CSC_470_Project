@@ -1,4 +1,6 @@
 import React from 'react'
+import { Workout } from "../../Models/Workout";
+
 
 interface Exercise {
     title: string;
@@ -14,22 +16,18 @@ interface Prs {
 }
 
 interface Props {
-    workoutTitle: string;
+    workout?: Workout;
+
     time: number;
-    trigger: boolean;
+    trigger: boolean | null;
     setTrigger: (value: boolean) => void;
-    exercises: Exercise[];
+    exercises: Exercise[] | null;
     pr: Prs[] | null;
 
 }
 
 const WorkoutCompletedReport = (props: Props) => {
 
-    //Display time in a HH:MM:SS fashion from a still number.
-    const hours = Math.floor(props.time / 3600);
-    const minutes = Math.floor((props.time % 3600) / 60);
-    const seconds = props.time % 60;
-    const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
     //const [workout, setWorkout] = useState(props.workout);
 
@@ -38,7 +36,11 @@ const WorkoutCompletedReport = (props: Props) => {
             <div className="reports-box">
              <button className="reports-workout-button" onClick={() => props.setTrigger(false)}> X </button>
                 <div className="reports-header">
-                    <h1>Workout "{props.workoutTitle}" completed!</h1>
+                {props.workout?.Title !== undefined ? (
+                    <h1>Workout "{props.workout?.Title}" completed!</h1>
+                ) : (
+                  <h1>Workout Completed</h1>
+                 )}
                 </div>
                 <div className="reports-divider"></div>
                 
@@ -48,23 +50,27 @@ const WorkoutCompletedReport = (props: Props) => {
                 </div>
 
                 <div className="reports-time-right">
-                    <p>{formattedTime}</p>
+                    <p>{new Date(props.time * 1000).toISOString().slice(11, 19)}</p>
                 </div>
                 
                 <div className="reports-exercise-list-header">
                     <p>Exercises Completed:</p>
                 </div>
-                
-                <div className="reports-exercise-list">
-                    {props.exercises.map((exercise, index) => (
-                        <ul key={index}>
-                            <div className="exercise-info">
-                                <div className="list-title">{exercise.title}:</div>
-                                <div className="setsNreps">{exercise.sets}x{exercise.reps}</div>
-                            </div>
-                        </ul>
-                    ))}
-                </div>
+                {props.exercises !==  null ? (
+                  <div className="reports-exercise-list">
+                      {props.exercises.map((exercise, index) => (
+                          <ul key={index}>
+                              <div className="exercise-info">
+                                  <div className="list-title">{exercise.title}:</div>
+                                  <div className="setsNreps">{exercise.sets}x{exercise.reps}</div>
+                              </div>
+                          </ul>
+                     ))}
+                  </div>
+                ) :  (
+                  <div className="list-title">None</div>
+                )
+              }
 
                 {props.pr !== null && props.pr.length > 0 && (
                     <>
@@ -93,141 +99,4 @@ const WorkoutCompletedReport = (props: Props) => {
 }
 
 export default WorkoutCompletedReport;
-
-
-/* need to import usestate for button
-import React, { useContext, useState } from "react";
-
-
-/* button code
-const [buttonPopup, setButtonPopup] = useState(false);
-
-<button onClick={() => setButtonPopup(true)}>Open Popup</button>
-        <Reports
-          pr={prs}
-          exercises={exercises}
-          trigger={buttonPopup}
-          setTrigger={setButtonPopup}
-          workoutTitle="PROWORKOUT1"
-          time={1000}
-        />
-
-
-
-/* test array for exercises
-const exercises = [
-  {title: 'Bench', sets: 5, reps: 12, weight: 10},
-  {title: 'Squats', sets: 5, reps: 5, weight: 20},
-  {title: 'Curls', sets: 4, reps: 10, weight: 30}
-];
-
-/* test array for Prs
-const prs = [
-  {title: 'Bench', volume: 123, weight: 10, category: "Volume"},
-  {title: 'Squats', volume: 20, weight: 100, category: "Weight"},
-  {title: 'Curls', volume: 10, weight: 30, category: "Mental"}
-]
-
-/* css
-/************ reports.tsx ***********/
-/*
-.reports-popup-box {
-    position: fixed;
-    background-color: rgba(0, 0, 0, 0.5);
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100vh; 
-  
-  
-  }
-  .reports-box {
-      position: relative;
-      width: 50%;
-      min-height: 300px;
-      background-color: #fff;
-      border: 1px solid #999;
-      border-radius: 4px;
-      margin: 20px auto;
-      padding: 20px;
-      overflow: auto;
-    }
-  .reports-divider{
-    border-top: 3px solid #bbb;
-  }
-  .reports-time-left{
-    padding: 10px;
-    float: left;
-  }
-  .reports-time-right{
-    float: right;
-    padding: 10px;
-  }
-  .reports-exercise-list-header{
-    clear: left;
-    padding: 10px;
-  }
-  
-  .reports-exercise-list {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .reports-exercise-list ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .exercise-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: right;
-    padding-right: 10px;
-  }
-  
-  .list-title {
-    padding-left: 30%;
-  }
-  
-  .setsNreps {
-    padding-right: 20%;
-    
-  }
-  
-  .reports-exercise-pr{
-    clear: left;
-    padding: 10px;
-  }
-  .pr-info{
-    display: flex;
-    justify-content: space-between;
-    align-items: right;
-    padding-right: 10px;
-  }
-  .pr-title{
-    padding-left: 30%;
-  }
-  .pr-content{
-    padding-right: 20%;
-  }
-  
-  .reports-workout-button {
-      cursor: pointer;
-      border: 1px solid #999;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      box-sizing: border-box;
-      position: fixed;
-      right: calc(25% - 5px);
-      top: 15px;
-    }
-
-
-
-
-*/
-
-
 
