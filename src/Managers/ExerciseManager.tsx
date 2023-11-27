@@ -16,6 +16,7 @@ function ExerciseManager(){
                 Description: description,
                 MuscleGroup: muscleGroup,
                 Date: Timestamp.fromDate(new Date()),
+                SetIDs: "",
             } as unknown as Exercise;
 
             const docRef = await addDoc(ExerciseCollectionRef, exercise);
