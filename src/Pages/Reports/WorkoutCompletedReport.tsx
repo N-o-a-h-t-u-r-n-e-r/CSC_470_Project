@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import { Workout } from "../../Models/Workout";
 import { Exercise } from "../../Models/Exercise";
-import SetManager from "../../Managers/SetManager"
 import { Set } from '../../Models/Set';
+import SetManager from '../../Managers/SetManager';
+
 
 interface Prs {
     title: string;
@@ -20,6 +21,29 @@ interface Props {
 }
 
 const WorkoutCompletedReport = (props: Props) => {
+    const setManager = SetManager();
+    const [setData, setSetData] = useState<Set | null>(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const setId = props.exercises?.[0]?.SetIDs.split(',')[0] || '';
+            const set = await setManager.getSets(setId);
+            console.log(set);
+            
+            if (set) {
+              setSetData(set);
+            } else {
+              setSetData(null);
+            }
+          } catch (error) {
+            console.error('Error fetching set:', error);
+          }
+        };
+      
+        fetchData();
+      }, [props.exercises]);
+
     
     return (
         <div className="reports-popup-box">
@@ -49,9 +73,11 @@ const WorkoutCompletedReport = (props: Props) => {
                                 <div className="exercise-info">
                                     <div className="list-title">{exercise.Title}:</div>
                                     <div className="setsNreps">
-                                        {exercise.SetIDs.split(',').map((setId, index) => (
-                                            <div key={index}>{setId}</div>
-                                        ))}
+                                    {exercise.SetIDs.split(',').map((setId, index) => (
+                                        <div key={index}>
+                                        {setData?.NumberReps} x {setData?.Weight}
+                                        </div>
+                                    ))}
                                     </div>
                                 </div>
                             </ul>

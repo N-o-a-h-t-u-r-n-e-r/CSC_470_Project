@@ -1,6 +1,6 @@
 import { Set } from "../Models/Set";
 
-import { addDoc, updateDoc, getDocs, deleteDoc, collection, Timestamp, query, where } from "@firebase/firestore"
+import { addDoc, updateDoc, getDoc, doc, deleteDoc, collection, Timestamp, query, where } from "@firebase/firestore"
 import { firestore } from "../firebase_setup/firebase"
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -29,25 +29,21 @@ function SetManager(){
         //updateDoc
     }
 
-    const getSets = async () => {
-        // try {
-        //     const searchQuery = query(ExerciseCollectionRef, where("UserID", "==", user?.sub));
-        //     const queryResults = await getDocs(searchQuery);
-            
-        //     return queryResults.docs.map((doc: any) => {
-        //         const exerciseData: Exercise = doc.data() as Exercise;
-        //         return exerciseData;
-        //     });
-        // } catch (exception) {
-        //     console.error("Error getting exercises: ", exception );
-        // }
+    const getSets = async (id: string) => {
+        const docRef = doc(SetCollectionRef, id);
+        try {
+            const doc = await getDoc(docRef);
+            return doc.data() as Set;
+        } catch (exception) {
+            console.error("Error getting sets: ", exception)
+        }
     } 
 
     const deleteSet = async (exerciseID: number) => {
         //deleteDoc
     }
 
-    return { addSet }
+    return { addSet, getSets }
 }
 
 export default SetManager;
