@@ -6,7 +6,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 function ExerciseManager(){
     const { user } = useAuth0();
-    const ExerciseCollectionRef = collection(firestore, "Exercise");
+    const UserExerciseCollectionRef = collection(firestore, "User_Exercises");
 
     const addExercise = async (title: string, muscleGroup: string, description: string) => {
         try {
@@ -19,7 +19,7 @@ function ExerciseManager(){
                 SetIDs: "",
             } as unknown as Exercise;
 
-            const docRef = await addDoc(ExerciseCollectionRef, exercise);
+            const docRef = await addDoc(UserExerciseCollectionRef, exercise);
 
             const returnExercise = {
                 id: docRef.id,
@@ -42,7 +42,7 @@ function ExerciseManager(){
 
     const getUserExercises = async () => {
         try {
-            const searchQuery = query(ExerciseCollectionRef, where("UserID", "==", user?.sub));
+            const searchQuery = query(UserExerciseCollectionRef, where("UserID", "==", user?.sub));
             const queryResults = await getDocs(searchQuery);
             
             return queryResults.docs.map((doc: any) => {
@@ -55,7 +55,7 @@ function ExerciseManager(){
     }
 
     const getExercisebyID = async (id: string) => {
-        const docRef = doc(ExerciseCollectionRef, id);
+        const docRef = doc(UserExerciseCollectionRef, id);
         try {
             const doc = await getDoc(docRef);
             return doc.data() as Exercise;
@@ -66,7 +66,7 @@ function ExerciseManager(){
     
     const getGlobalExercises = async () => {
         try {
-            const searchQuery = query(ExerciseCollectionRef, where("UserID", "==", "GLOBAL"));
+            const searchQuery = query(UserExerciseCollectionRef, where("UserID", "==", "GLOBAL"));
             const queryResults = await getDocs(searchQuery);
             
             return queryResults.docs.map((doc: any) => {
