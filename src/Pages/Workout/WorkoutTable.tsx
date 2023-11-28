@@ -10,6 +10,7 @@ import { Set } from "../../Models/Set";
 interface Props {
     existingWorkout: Workout | undefined,
     setShowExerciseSearch: (showExerciseSearch: boolean) => void;
+    onExerciseChange: (exercises: Exercise[]) => void;
 }
 
 const WorkoutTable = (props: Props) => {
@@ -56,6 +57,10 @@ const WorkoutTable = (props: Props) => {
         setExercises(existingExercises);
         setAddSetLoading(false);
     }
+
+    useEffect(() => {
+        props.onExerciseChange(exercises);
+    }, [exercises]);
 
     return(
         <>
