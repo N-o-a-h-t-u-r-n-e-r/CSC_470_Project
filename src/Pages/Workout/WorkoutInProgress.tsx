@@ -4,6 +4,7 @@ import { Workout } from "../../Models/Workout";
 import WorkoutTable from "./WorkoutTable";
 import WorkoutCompletedReport from "../Reports/WorkoutCompletedReport"
 import { Exercise } from "../../Models/Exercise";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     workout?: Workout,
@@ -17,6 +18,8 @@ const WorkoutInProgress = (props: Props) => {
     const [showExerciseSearch, setShowExerciseSearch] = useState(false);
     const [ exercises, setExercises ] = useState<Exercise[]>([]);
     const [workoutCompleted, setWorkoutCompleted] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(timerRunning){
@@ -45,6 +48,7 @@ const WorkoutInProgress = (props: Props) => {
 
     const handleWorkouotCompleted = () => {
         setShowWorkoutCompletedReport(false);
+        navigate('/');
     }
 
     return(
