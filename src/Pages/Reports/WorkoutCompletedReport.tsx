@@ -1,13 +1,11 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Workout } from "../../Models/Workout";
+import { Exercise } from "../../Models/Exercise";
+import SetManager from "../../Managers/SetManager"
+import { Set } from '../../Models/Set';
 
 
-interface Exercise {
-    title: string;
-    sets: number;
-    reps: number;
-    weight: number
-}
+
 interface Prs {
     title: string;
     volume: number;
@@ -26,11 +24,11 @@ interface Props {
 
 }
 
+
+
+
 const WorkoutCompletedReport = (props: Props) => {
-
-
-    //const [workout, setWorkout] = useState(props.workout);
-
+    
     return (props.trigger) ? (
         <div className="reports-popup-box">
             <div className="reports-box">
@@ -61,8 +59,12 @@ const WorkoutCompletedReport = (props: Props) => {
                       {props.exercises.map((exercise, index) => (
                           <ul key={index}>
                               <div className="exercise-info">
-                                  <div className="list-title">{exercise.title}:</div>
-                                  <div className="setsNreps">{exercise.sets}x{exercise.reps}</div>
+                                  <div className="list-title">{exercise.Title}:</div>
+                                  <div className="setsNreps">
+                                    {exercise.SetIDs.split(',').map((setId, index) => (
+                                        <div key={index}>{setId}</div>
+                                    ))}
+                                  </div>
                               </div>
                           </ul>
                      ))}
