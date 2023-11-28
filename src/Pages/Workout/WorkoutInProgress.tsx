@@ -27,20 +27,25 @@ const WorkoutInProgress = (props: Props) => {
             return () => clearInterval(interval);
         }
     }, [timerRunning]);
+
     const handleEndWorkout = () => {
         stopTimer();
         setShowWorkoutCompletedReport(true);
         setWorkoutCompleted(true);
     }
+    
     const stopTimer = () => {
         setTimerRunning(false);
     };
-    const handleExercisesChange = (exercises: Exercise[]) =>{
+
+    const handleExercisesChange = (exercises: Exercise[]) => {
         setExercises(exercises);
         console.log('Updated exercises:', exercises);
     };
 
-
+    const handleWorkouotCompleted = () => {
+        setShowWorkoutCompletedReport(false);
+    }
 
     return(
         <>
@@ -49,27 +54,13 @@ const WorkoutInProgress = (props: Props) => {
                     <h2>Workout</h2>
                     <h2 className="timer">{new Date(seconds * 1000).toISOString().slice(11, 19)}</h2>
                     <button className="end-workout" onClick={handleEndWorkout}>END</button>
-                        
                 </div>
                 <div className="body">
-                    <WorkoutTable 
-                        existingWorkout={props.workout} 
-                        setShowExerciseSearch={setShowExerciseSearch}
-                        onExerciseChange={handleExercisesChange}
-                    />
+                    <WorkoutTable existingWorkout={props.workout} setShowExerciseSearch={setShowExerciseSearch} onExerciseChange={handleExercisesChange} />
                 </div>
             </div>
             
-            {workoutCompleted && (
-                <WorkoutCompletedReport
-                    pr={null}
-                    workout={props.workout}
-                    exercises={exercises}
-                    time={seconds}
-                    trigger={showWorkoutCompletedReport}
-                    setTrigger={setShowWorkoutCompletedReport}
-                />
-            )}
+            {workoutCompleted && <WorkoutCompletedReport pr={null} workout={workout} exercises={exercises} time={seconds} handleClose={handleWorkouotCompleted} />}
         </>
     );
 
