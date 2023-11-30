@@ -5,6 +5,11 @@ import WorkoutTable from "./WorkoutTable";
 import WorkoutCompletedReport from "../Reports/WorkoutCompletedReport"
 import { Exercise } from "../../Models/Exercise";
 import { useNavigate } from "react-router-dom";
+import { CompletedSet } from "../../Models/CompletedSet";
+import ExerciseManager from "../../Managers/ExerciseManager";
+import SetManager from "../../Managers/SetManager";
+import { useAuth0 } from "@auth0/auth0-react";
+import WorkoutManager from "../../Managers/WorkoutManager";
 
 interface Props {
     workout?: Workout,
@@ -13,13 +18,20 @@ interface Props {
 const WorkoutInProgress = (props: Props) => {
     const [seconds, setSeconds] = useState(0);
     const [timerRunning, setTimerRunning] = useState(true);
+
     const [workout, setWorkout] = useState(props.workout);
+    const [ exercises, setExercises ] = useState<Exercise[]>([]);
+    const [ completedSets, setCompletedSets ] = useState<{SetIndex: number, ExerciseIndex: number, Reps: number, Weight: number}[]>([]);
+
+    const [workoutCompleted, setWorkoutCompleted] = useState(false);
     const [showWorkoutCompletedReport, setShowWorkoutCompletedReport] = useState(false);
     const [showExerciseSearch, setShowExerciseSearch] = useState(false);
-    const [ exercises, setExercises ] = useState<Exercise[]>([]);
-    const [workoutCompleted, setWorkoutCompleted] = useState(false);
 
     const navigate = useNavigate();
+    const exerciseManager = ExerciseManager();
+    const setManager = SetManager();
+    const workoutManager = WorkoutManager();
+    const { user } = useAuth0();
 
     useEffect(() => {
         if(timerRunning){
@@ -31,19 +43,78 @@ const WorkoutInProgress = (props: Props) => {
         }
     }, [timerRunning]);
 
-    const handleEndWorkout = () => {
+    const handleEndWorkout = async () => {
         stopTimer();
+
+        let exercisesWithSets = [] as Exercise[];
+        let completedSetsWithRepWeight = [] as {SetIndex: number, ExerciseIndex: number, Reps: number, Weight: number}[];
+        exercises.forEach((e, index) => {
+            let hasCompletedSets = false;
+            completedSets.forEach(s => {
+                if(s.ExerciseIndex === index && s.Reps !== undefined && s.Weight !== undefined){
+                    hasCompletedSets = true;
+                    completedSetsWithRepWeight.push(s);
+                }
+            })
+
+            if(hasCompletedSets)
+             exercisesWithSets.push(e);
+        })
+
+        console.log(exercisesWithSets, completedSetsWithRepWeight);
+
+        let NewExerciseIDs = "";
+
+        await exercisesWithSets.forEach(async (x, index) => {
+            let exerciseID = "";
+            await exerciseManager.addCompletedExercise(x).then((result) => {
+                exerciseID = result!;
+            });
+
+            console.log(exerciseID);
+
+            if(NewExerciseIDs === ""){
+                NewExerciseIDs = exerciseID;
+            } else {
+                NewExerciseIDs = NewExerciseIDs + ',' + exerciseID;
+            }
+
+            const exerciseSets = completedSetsWithRepWeight.filter(cs => cs.ExerciseIndex === index);
+            exerciseSets.forEach(s => {
+                const completedSet = {
+                    ForExerciseID: exerciseID,
+                    Set: {
+                        NumberReps: s.Reps,
+                        Weight: s.Weight
+                    }
+                } as CompletedSet;
+
+                setManager.addSet(completedSet);
+            })
+        })
+
+        console.log(NewExerciseIDs);
+
+        const newWorkout = {
+            UserID: user?.sub,
+            Date: new Date(),
+            ExerciseIDs: NewExerciseIDs,
+            TimeElapse: seconds,
+        } as unknown as Workout;
+
+        workoutManager.addCompletedWorkout(newWorkout).then((result) => {
+            newWorkout.WorkoutID = result!;
+        });
+
+        setWorkout(newWorkout);
+
+
         setShowWorkoutCompletedReport(true);
         setWorkoutCompleted(true);
     }
     
     const stopTimer = () => {
         setTimerRunning(false);
-    };
-
-    const handleExercisesChange = (exercises: Exercise[]) => {
-        setExercises(exercises);
-        console.log('Updated exercises:', exercises);
     };
 
     const handleWorkouotCompleted = () => {
@@ -60,7 +131,7 @@ const WorkoutInProgress = (props: Props) => {
                     <button className="end-workout" onClick={handleEndWorkout}>END</button>
                 </div>
                 <div className="body">
-                    <WorkoutTable existingWorkout={props.workout} setShowExerciseSearch={setShowExerciseSearch} onExerciseChange={handleExercisesChange} />
+                    <WorkoutTable existingWorkout={workout} setExercises={(Exercises: Exercise[]) => setExercises(Exercises)} setCompletedSets={(CompletedSets: {SetIndex: number, ExerciseIndex: number, Reps: number, Weight: number}[]) => setCompletedSets(CompletedSets)} setShowExerciseSearch={setShowExerciseSearch} />
                 </div>
             </div>
             

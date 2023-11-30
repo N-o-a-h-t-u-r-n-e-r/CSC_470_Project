@@ -7,6 +7,17 @@ import { useAuth0 } from "@auth0/auth0-react";
 function ExerciseManager(){
     const { user } = useAuth0();
     const UserExerciseCollectionRef = collection(firestore, "User_Exercises");
+    const GlobalExerciseCollectionRef = collection(firestore, "Exercise");
+    const CompletedExerciseCollectionRef = collection(firestore, "Completed_Exercises");
+
+    const addCompletedExercise = async (Exercise: Exercise) => {
+        try {
+            const docRef = await addDoc(CompletedExerciseCollectionRef, Exercise);
+            return docRef.id;
+        } catch (exception) {
+            console.error("Error saving exercise: ", exception );
+        }
+    }
 
     const addExercise = async (title: string, muscleGroup: string, description: string) => {
         try {
@@ -66,7 +77,7 @@ function ExerciseManager(){
     
     const getGlobalExercises = async () => {
         try {
-            const searchQuery = query(UserExerciseCollectionRef, where("UserID", "==", "GLOBAL"));
+            const searchQuery = query(GlobalExerciseCollectionRef, where("UserID", "==", "global"));
             const queryResults = await getDocs(searchQuery);
             
             return queryResults.docs.map((doc: any) => {
@@ -82,7 +93,7 @@ function ExerciseManager(){
         //deleteDoc
     }
 
-    return { addExercise, getUserExercises }
+    return { addExercise, addCompletedExercise, getUserExercises, getGlobalExercises }
 }
 
 export default ExerciseManager;
