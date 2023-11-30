@@ -61,37 +61,45 @@ const WorkoutInProgress = (props: Props) => {
              exercisesWithSets.push(e);
         })
 
-        console.log(exercisesWithSets, completedSetsWithRepWeight);
-
         let NewExerciseIDs = "";
 
-        await exercisesWithSets.forEach(async (x, index) => {
-            let exerciseID = "";
-            await exerciseManager.addCompletedExercise(x).then((result) => {
-                exerciseID = result!;
-            });
+        for (let index = 0; index < exercisesWithSets.length; index++) {
+            const x = exercisesWithSets[index];
+    
+            try {
+                let exerciseID = "";
 
-            console.log(exerciseID);
-
-            if(NewExerciseIDs === ""){
-                NewExerciseIDs = exerciseID;
-            } else {
-                NewExerciseIDs = NewExerciseIDs + ',' + exerciseID;
+                await exerciseManager.addCompletedExercise(x).then((result) => {
+                    exerciseID = result!;
+                });
+    
+                console.log(exerciseID);
+    
+                if (NewExerciseIDs === "") {
+                    NewExerciseIDs = exerciseID!;
+                } else {
+                    NewExerciseIDs = NewExerciseIDs + ',' + exerciseID;
+                }
+    
+                const exerciseSets = completedSetsWithRepWeight.filter(
+                    cs => cs.ExerciseIndex === index
+                );
+    
+                for (const s of exerciseSets) {
+                    const completedSet = {
+                        ForExerciseID: exerciseID,
+                        Set: {
+                            NumberReps: s.Reps,
+                            Weight: s.Weight
+                        }
+                    } as CompletedSet;
+    
+                    await setManager.addSet(completedSet);
+                }
+            } catch (error) {
+                console.error("Error adding exercise/set: ", error);
             }
-
-            const exerciseSets = completedSetsWithRepWeight.filter(cs => cs.ExerciseIndex === index);
-            exerciseSets.forEach(s => {
-                const completedSet = {
-                    ForExerciseID: exerciseID,
-                    Set: {
-                        NumberReps: s.Reps,
-                        Weight: s.Weight
-                    }
-                } as CompletedSet;
-
-                setManager.addSet(completedSet);
-            })
-        })
+        }
 
         console.log(NewExerciseIDs);
 

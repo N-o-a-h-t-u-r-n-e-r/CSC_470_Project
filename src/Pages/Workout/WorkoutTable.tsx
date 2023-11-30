@@ -30,10 +30,6 @@ const WorkoutTable = (props: Props) => {
     }
 
     const handleMarkSetCompleted = (checked: boolean, SetIndex: number, ExerciseIndex: number) => {
-        console.log(checked, SetIndex, ExerciseIndex);
-        console.log("weight value: ", weights[weights.findIndex(x => x.SetIndex === SetIndex)]);
-        console.log("rep value: ", reps[reps.findIndex(x => x.SetIndex === SetIndex)]);
-
         let newCompletedSets = [];
 
         if(checked){
@@ -69,7 +65,7 @@ const WorkoutTable = (props: Props) => {
 
     const handleSetReps = (SetIndex: number, Reps: number) => {
         const idx = reps.findIndex(x => x.SetIndex === SetIndex);
-        console.log(SetIndex, Reps);
+        
         if(idx === -1){
             const newReps = [...reps, {SetIndex: SetIndex, Reps: Reps}];
             setReps(newReps);
@@ -82,7 +78,7 @@ const WorkoutTable = (props: Props) => {
      
      const handleSetWeights = (SetIndex: number, Weight: number) => {
         const idx = weights.findIndex(x => x.SetIndex === SetIndex);
-        console.log(SetIndex, Weight);
+
         if(idx === -1){
             const newWeights = [...weights, {SetIndex: SetIndex, Weight: Weight}];
             setWeights(newWeights);

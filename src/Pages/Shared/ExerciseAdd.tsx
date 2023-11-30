@@ -22,8 +22,7 @@ const ExerciseAdd = (props: Props) => {
 
     const handleAddExercise = () => {
        exerciseManager.addExercise(exerciseName, muscleGroup, description).then((result) => {
-            if(result){
-                console.log(result);   
+            if(result){ 
                 props.returnExercise();
             }
        });
