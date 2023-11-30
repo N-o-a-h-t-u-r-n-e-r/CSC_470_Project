@@ -66,7 +66,7 @@ function ExerciseManager(){
     }
 
     const getExercisebyID = async (id: string) => {
-        const docRef = doc(UserExerciseCollectionRef, id);
+        const docRef = doc(CompletedExerciseCollectionRef, id);
         try {
             const doc = await getDoc(docRef);
             return doc.data() as Exercise;
@@ -93,7 +93,7 @@ function ExerciseManager(){
         //deleteDoc
     }
 
-    return { addExercise, addCompletedExercise, getUserExercises, getGlobalExercises }
+    return { addExercise, addCompletedExercise, getUserExercises, getGlobalExercises, getExercisebyID }
 }
 
 export default ExerciseManager;

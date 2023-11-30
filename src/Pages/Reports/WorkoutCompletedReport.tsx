@@ -29,7 +29,7 @@ const WorkoutCompletedReport = (props: Props) => {
     useEffect(() => {
         const fetchUserExercises = async () => {
             try {
-
+                console.log("Workout Before:", props.workout)
                 // For testing purposes
                 const dummyExerciseIDs = ['I7tZY7B6Gdy2GWV167SL', 'rjlIJaWIb6SaJ4ggZefX'];
 
@@ -40,13 +40,11 @@ const WorkoutCompletedReport = (props: Props) => {
                     exerciseIds.map(async (exerciseId) => {
                         const exercise = await exerciseManager.getExercisebyID(exerciseId.trim());
                         console.log("this is what's getting searched:", exerciseId);
+                        console.log("Exercises:", exercise?.Title)
 
-                        // Fetch sets for each exercise
-                        const setIds = exercise?.SetIDs.split(',') || [];
-                        const sets = await Promise.all(setIds.map(async (setId) => {
-                            return setManager.getSets(setId.trim());
-                        }));
+                        const sets = await setManager.getSets(exerciseId.trim()); // Updated this line
 
+               
                         return { ...exercise, sets };              
                     })
                 );
@@ -54,12 +52,14 @@ const WorkoutCompletedReport = (props: Props) => {
                 console.log('User exercises:', userExercises);
                 const filteredUserExercises = userExercises.filter((exercise) => exercise !== undefined) as Exercise[];
                 setUserData(filteredUserExercises);
+                
             } catch (error) {
                 console.error('Error fetching user exercises:', error);
             }
         };
 
         fetchUserExercises();
+        
         
     }, [props.workout]);
 
@@ -97,6 +97,7 @@ const WorkoutCompletedReport = (props: Props) => {
                                                 {set.NumberReps} x {set.Weight}
                                             </div>
                                         ))}
+                                        {console.log("InvestigateThis:", userData)}
                                     </div>
                                 </div>
                             </ul>

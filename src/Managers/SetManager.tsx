@@ -1,6 +1,6 @@
 import { Set } from "../Models/Set";
 
-import { addDoc, updateDoc, getDoc, doc, deleteDoc, collection, Timestamp, query, where } from "@firebase/firestore"
+import { addDoc, updateDoc, getDocs, doc, deleteDoc, collection, Timestamp, query, where } from "@firebase/firestore"
 import { firestore } from "../firebase_setup/firebase"
 import { useAuth0 } from "@auth0/auth0-react";
 import { CompletedSet } from "../Models/CompletedSet";
@@ -23,15 +23,29 @@ function SetManager(){
         //updateDoc
     }
 
-    const getSets = async (id: string) => {
-        const docRef = doc(SetCollectionRef, id);
+    const getSets = async (forExerciseID: string) => {
         try {
-            const doc = await getDoc(docRef);
-            return doc.data() as Set;
+            // Query the Set collection where ForExerciseID matches the provided ID
+            const q = query(SetCollectionRef, where("ForExerciseID", "==", forExerciseID));
+            
+            // Get the documents that match the query
+            const querySnapshot = await getDocs(q);
+            
+            // Create an array to store the sets
+            const sets: Set[] = [];
+    
+            // Iterate through the documents and extract the Set objects
+            querySnapshot.forEach((doc) => {
+                const completedSet = doc.data() as CompletedSet;
+                sets.push(completedSet.Set);
+            });
+    
+            return sets;
         } catch (exception) {
-            console.error("Error getting sets: ", exception)
+            console.error("Error getting sets: ", exception);
+            return [];
         }
-    } 
+    }
 
     const deleteSet = async (exerciseID: number) => {
         //deleteDoc
