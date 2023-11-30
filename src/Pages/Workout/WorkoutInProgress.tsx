@@ -73,8 +73,6 @@ const WorkoutInProgress = (props: Props) => {
                     exerciseID = result!;
                 });
     
-                console.log(exerciseID);
-    
                 if (NewExerciseIDs === "") {
                     NewExerciseIDs = exerciseID!;
                 } else {
@@ -101,13 +99,11 @@ const WorkoutInProgress = (props: Props) => {
             }
         }
 
-        console.log(NewExerciseIDs);
-
         const newWorkout = {
             UserID: user?.sub,
             Date: new Date(),
             ExerciseIDs: NewExerciseIDs,
-            TimeElapse: seconds,
+            TimeElapsed: seconds,
         } as unknown as Workout;
 
         workoutManager.addCompletedWorkout(newWorkout).then((result) => {
@@ -115,8 +111,6 @@ const WorkoutInProgress = (props: Props) => {
         });
 
         setWorkout(newWorkout);
-
-
         setShowWorkoutCompletedReport(true);
         setWorkoutCompleted(true);
     }
