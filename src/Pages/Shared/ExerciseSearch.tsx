@@ -20,22 +20,35 @@ const ExerciseSearch = (props: Props) => {
     const exerciseManager = ExerciseManager();
 
     const handleExerciseAddReturn = () => {
-        getUserExercises();
+        getExercises();
         setShowExerciseAdd(false);
     }
 
-    const getUserExercises = () => {
+    const getExercises = async () => {
         setLoading(true);
-        exerciseManager.getUserExercises().then((result) => {
+
+        let newExercises = [] as Exercise[];
+
+        await exerciseManager.getGlobalExercises().then((result) => {
             if(result){
-                setExercises(result);
+                newExercises = newExercises.concat(result);
             }
-            setLoading(false);
         });
+
+        await exerciseManager.getUserExercises().then((result) => {
+            if(result){
+                newExercises = newExercises.concat(result);
+            }
+        });
+
+        newExercises.sort((a: Exercise, b: Exercise) => {return a.Title.localeCompare(b.Title)});
+        setExercises(newExercises);
+
+        setLoading(false);
     }
 
     useEffect(() => {
-        getUserExercises();
+        getExercises();
     }, [])
     
     return(

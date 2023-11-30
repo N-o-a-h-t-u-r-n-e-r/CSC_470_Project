@@ -1,6 +1,6 @@
 export interface Exercise {
     [key: string]: any;
-    ExerciseID: number;
+    ExerciseID: string;
     UserID: string;
     Title: string;
     Description: string;

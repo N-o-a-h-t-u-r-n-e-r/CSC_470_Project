@@ -224,39 +224,62 @@ body {
   .workout-table-row {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     padding-bottom: 5px;
-  
-    .exercise-column {
-      display: flex;
-      flex-direction: column;
+
+    .exercise-title-column {
+      display: inline-flex;
+      justify-content: flex-start;
       align-items: center;
-      justify-content: center;
-      width: 150px;
-  
+      max-width: calc(30vw - 80px);
+      min-width: calc(30vw - 80px);
+
       .exercise-title {
         font-weight: bold;
       }
-  
-      .exercise-number-input {
-        background: lightgrey;
-        border: none;
-        border-radius: 10px;
-        width: 80px;
-        height: 20px;
-        padding: 5px 5px 5px 15px;
-        
+    }
+
+    .exercise-sets-container {
+      display: inline-flex;
+      flex-direction: column;
+      flex-grow: 2;
+      justify-content: center;
+
+      .exercise-set-container {
+        display: inline-flex;
+        justify-content: space-between;
+
         &:not(:last-child) {
-          margin-bottom: 15px;
+          padding-bottom: 7px;
         }
-      }
-  
-      .exercise-checkbox-input { 
-        height: 20px;
-        width: 20px;
-  
-        &:not(:last-child) {
-          margin-bottom: 15px;
+      
+        .exercise-column {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 150px;
+      
+          .exercise-number-input {
+            background: lightgrey;
+            border: none;
+            border-radius: 10px;
+            width: 80px;
+            height: 20px;
+            padding: 5px 5px 5px 15px;
+            
+            &:not(:last-child) {
+              margin-bottom: 15px;
+            }
+          }
+      
+          .exercise-checkbox-input { 
+            height: 20px;
+            width: 20px;
+      
+            &:not(:last-child) {
+              margin-bottom: 15px;
+            }
+          }
         }
       }
     }

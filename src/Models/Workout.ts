@@ -1,6 +1,8 @@
+import { CompletedSet } from "./CompletedSet";
+
 export interface Workout {
     [key: string]: any;
-    WorkoutID: number;
+    WorkoutID: string;
     UserID: string;
     Title: string;
     Description: string;

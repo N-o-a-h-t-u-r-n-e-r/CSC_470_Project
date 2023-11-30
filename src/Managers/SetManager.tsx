@@ -3,23 +3,17 @@ import { Set } from "../Models/Set";
 import { addDoc, updateDoc, getDoc, doc, deleteDoc, collection, Timestamp, query, where } from "@firebase/firestore"
 import { firestore } from "../firebase_setup/firebase"
 import { useAuth0 } from "@auth0/auth0-react";
+import { CompletedSet } from "../Models/CompletedSet";
 
 function SetManager(){
     const { user } = useAuth0();
     const SetCollectionRef = collection(firestore, "Set");
 
-    const addSet = async (NumberReps?: number, Weight?: number) => {
+    const addSet = async (CompletedSet: CompletedSet) => {
         try {
-            const set = {
-                NumberReps: NumberReps === undefined ? 12 : NumberReps,
-                Weight: Weight === undefined ? 100 : Weight,
-            } as unknown as Set;
-
-            const docRef = await addDoc(SetCollectionRef, set);
-
-            set.SetID = docRef.id;
-            
-            return set;
+            const docRef = await addDoc(SetCollectionRef, CompletedSet);
+      
+            return docRef.id;
         } catch (exception) {
             console.error("Error saving exercise: ", exception );
         }
