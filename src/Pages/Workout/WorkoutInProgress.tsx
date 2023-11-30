@@ -137,7 +137,7 @@ const WorkoutInProgress = (props: Props) => {
                 </div>
             </div>
             
-            {workoutCompleted && <WorkoutCompletedReport pr={null} workout={workout} exercises={exercises} time={seconds} handleClose={handleWorkouotCompleted} />}
+            {workoutCompleted && <WorkoutCompletedReport pr={null} workout={workout} time={seconds} handleClose={handleWorkouotCompleted} />}
         </>
     );
 
