@@ -45,7 +45,7 @@ const WorkoutTable = (props: Props) => {
     }
 
     const handleAddExercise = async (exerciseToAdd: Exercise) => {
-        exerciseToAdd.SetIDs = "";
+        exerciseToAdd.SetIDs = "0";
         const newExercises = [...exercises, exerciseToAdd];
         setExercises(newExercises);
         props.setExercises(newExercises);
