@@ -48,6 +48,10 @@ const WorkoutInProgress = (props: Props) => {
 
         let exercisesWithSets = [] as Exercise[];
         let completedSetsWithRepWeight = [] as {SetIndex: number, ExerciseIndex: number, Reps: number, Weight: number}[];
+
+        console.log("All Exercises:", exercises);
+        console.log("completed sets:", completedSets)
+
         exercises.forEach((e, index) => {
             let hasCompletedSets = false;
             completedSets.forEach(s => {
@@ -82,8 +86,8 @@ const WorkoutInProgress = (props: Props) => {
                 const exerciseSets = completedSetsWithRepWeight.filter(
                     cs => cs.ExerciseIndex === index
                 );
-    
-                for (const s of exerciseSets) {
+                    
+                for (const s of exerciseSets) {                   
                     const completedSet = {
                         ForExerciseID: exerciseID,
                         Set: {
@@ -92,7 +96,7 @@ const WorkoutInProgress = (props: Props) => {
                         }
                     } as CompletedSet;
     
-                    await setManager.addSet(completedSet);
+                    await setManager.addSet(completedSet);                  
                 }
             } catch (error) {
                 console.error("Error adding exercise/set: ", error);
