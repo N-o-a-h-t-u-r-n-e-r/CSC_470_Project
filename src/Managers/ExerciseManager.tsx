@@ -39,6 +39,7 @@ function ExerciseManager(){
                 Description: exercise.Description,
                 MuscleGroup: exercise.MuscleGroup,
                 Date: exercise.Date,
+                ExerciseID: docRef.id
             } as unknown as Exercise;
             
             return returnExercise;
@@ -58,6 +59,7 @@ function ExerciseManager(){
             
             return queryResults.docs.map((doc: any) => {
                 const exerciseData: Exercise = doc.data() as Exercise;
+                exerciseData.ExerciseID = doc.id
                 return exerciseData;
             });
         } catch (exception) {
@@ -82,6 +84,7 @@ function ExerciseManager(){
             
             return queryResults.docs.map((doc: any) => {
                 const exerciseData: Exercise = doc.data() as Exercise;
+                exerciseData.ExerciseID = doc.id;
                 return exerciseData;
             });
         } catch (exception) {
