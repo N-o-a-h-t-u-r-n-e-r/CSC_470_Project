@@ -45,7 +45,8 @@ const WorkoutTable = (props: Props) => {
     }
 
     const handleAddExercise = async (exerciseToAdd: Exercise) => {
-        exerciseToAdd.SetIDs = "0";
+        console.log(exerciseToAdd);
+        exerciseToAdd.SetID = "0";
         const newExercises = [...exercises, exerciseToAdd];
         setExercises(newExercises);
         props.setExercises(newExercises);
@@ -53,13 +54,13 @@ const WorkoutTable = (props: Props) => {
     }
 
     const handleAddSet = async (exerciseIndex: number) => {
-        const currentSetIDs = exercises[exerciseIndex].SetIDs;
+        const currentSetIDs = exercises[exerciseIndex].SetID;
         const newSetID = parseInt(currentSetIDs.charAt(currentSetIDs.length - 1)) + 1;
         const newSetIDs = currentSetIDs + ',' + newSetID;
         
         let newExercises = exercises;
         let updatedExercise = newExercises[exerciseIndex];
-        updatedExercise.SetIDs = newSetIDs;
+        updatedExercise.SetID = newSetIDs;
         setExercises(newExercises);
     }
 
@@ -104,19 +105,19 @@ const WorkoutTable = (props: Props) => {
                         <div className="exercise-title-column">
                             <p className="exercise-title">{exercise.Title}</p>
                         </div>
-                        <div className="exercise-column">
+                        <div className="exercise-sets-container">
                             {exercise.SetID.split(',').map((set,setIndex) => (
-                                <input key={`exercise-${exercise.Title}-set-input-${setIndex}`} type="number" className="exercise-number-input" placeholder={"12"}></input>
-                            ))}
-                        </div>
-                        <div className="exercise-column">
-                            {exercise.SetID.split(',').map((set,setIndex) => (
-                                <input key={`exercise-${exercise.Title}-rep-input-${setIndex}`} type="number" className="exercise-number-input" placeholder={"100"}></input>
-                            ))}
-                        </div>
-                        <div className="exercise-column">
-                            {exercise.SetID.split(',').map((set,setIndex) => (
-                                <input key={`exercise-${exercise.Title}-copmleted-input-${setIndex}`} type="checkbox" className="exercise-checkbox-input"></input>
+                                <div className="exercise-set-container">
+                                    <div className="exercise-column">
+                                    <input key={`exercise-${exerciseIndex}-rep-input-${setIndex}`} type="number" className="exercise-number-input" placeholder={"12"} onChange={(e:any) => {handleSetReps(setIndex, exerciseIndex, parseInt(e.target.value))}}></input>
+                                </div>
+                                <div className="exercise-column">
+                                    <input key={`exercise-${exerciseIndex}-weight-input-${setIndex}`} type="number" className="exercise-number-input" placeholder={"100"} onChange={(e:any) => {handleSetWeights(setIndex, exerciseIndex, parseInt(e.target.value))}}></input>
+                                </div>
+                                <div className="exercise-column">
+                                    <input key={`exercise-${exerciseIndex}-copmleted-input-${setIndex}`} type="checkbox" className="exercise-checkbox-input" onClick={(e: any) => {handleMarkSetCompleted(e.target.checked, setIndex, exerciseIndex)}}></input> 
+                                </div>
+                                </div>
                             ))}
                         </div>
                     </div>

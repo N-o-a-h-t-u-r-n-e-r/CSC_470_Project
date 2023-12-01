@@ -3,6 +3,7 @@ import { Exercise } from "../Models/Exercise";
 import { doc, addDoc, updateDoc, getDoc, getDocs, deleteDoc, collection, Timestamp, query, where } from "@firebase/firestore"
 import { firestore } from "../firebase_setup/firebase"
 import { useAuth0 } from "@auth0/auth0-react";
+import { GlobalExercise } from "../Models/GlobalExercise";
 
 function ExerciseManager(){
     const { user } = useAuth0();
@@ -83,7 +84,7 @@ function ExerciseManager(){
             const queryResults = await getDocs(searchQuery);
             
             return queryResults.docs.map((doc: any) => {
-                const exerciseData: Exercise = doc.data() as Exercise;
+                const exerciseData = doc.data() as GlobalExercise;
                 exerciseData.ExerciseID = doc.id;
                 return exerciseData;
             });

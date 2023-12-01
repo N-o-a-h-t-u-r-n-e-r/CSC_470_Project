@@ -31,7 +31,16 @@ const ExerciseSearch = (props: Props) => {
 
         await exerciseManager.getGlobalExercises().then((result) => {
             if(result){
-                newExercises = newExercises.concat(result);
+                result.forEach(x => {
+                    newExercises.push({
+                        Title: x.Title,
+                        Date: x.Date,
+                        SetID: "",
+                        MuscleGroup: x.MuscleGroup,
+                        UserID: x.UserID,
+                        Description: x.Description
+                    } as unknown as Exercise);
+                });
             }
         });
 
