@@ -129,7 +129,6 @@ const WorkoutTable = (props: Props) => {
                 <button className="add-exercise-button" onClick={() => handleShowExerciseSearch(true)}>Add Exercise</button>
             </div>
         </>
-        */
     );
     
 }
