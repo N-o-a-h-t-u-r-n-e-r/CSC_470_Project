@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import WorkoutInProgress from "./WorkoutInProgress";
+import PlanCard from "../Shared/PlanCard";
 
 interface Props {
 
@@ -9,6 +10,7 @@ interface Props {
 const StartWorkout = (props: Props) => {
     const [displayWorkoutInProgress, setDisplayWorkoutInProgress] = useState(false);
     const [selectedWorkout, setSelectedWorkout] = useState(undefined);
+    const [showPlanCard, setShowPlanCard] = useState(undefined);
 
     return(
         <>
@@ -20,7 +22,7 @@ const StartWorkout = (props: Props) => {
                         <h1>Start Workout</h1>
                     </div>
                     <div className="body start-workout-body">
-                        
+                        <PlanCard></PlanCard>
                     </div>
                     <div className="footer start-blank-workout-button-container">
                         <button className="start-blank-workout-button" onClick={() => setDisplayWorkoutInProgress(!displayWorkoutInProgress)}>Start Blank Workout</button>
