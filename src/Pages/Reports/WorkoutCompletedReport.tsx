@@ -30,13 +30,11 @@ const WorkoutCompletedReport = (props: Props) => {
     useEffect(() => {
         const fetchUserExercises = async () => {
             try {
-                console.log("Workout Before:", props.workout)
                 // For testing purposes
                 const dummyExerciseIDs = ['I7tZY7B6Gdy2GWV167SL', 'rjlIJaWIb6SaJ4ggZefX'];
 
                 // dummyvalue or get ExerciseIDs from workout if its available.
                 const exerciseIds = props.workout?.ExerciseIDs ? props.workout.ExerciseIDs.split(',') : dummyExerciseIDs;
-                console.log("Exercise IDs updated:", exerciseIds)
 
                 const userExercises = await Promise.all(
                     exerciseIds.map(async (exerciseId) => {
@@ -48,7 +46,6 @@ const WorkoutCompletedReport = (props: Props) => {
                             sets.map(async (set) => userExerciseRecordManager.PRanator(exercise?.ExerciseID ? exercise.ExerciseID.trim() : '', set.NumberReps, set.Weight))
                         );
                         setPrsResults((prevResults) => (prevResults ? [...prevResults, prResults] : [prResults]));
-                        console.log("This should be fancy", prResults)
 
 
 
@@ -56,7 +53,6 @@ const WorkoutCompletedReport = (props: Props) => {
                     })
                 );
 
-                console.log('User exercises:', userExercises);
                 const filteredUserExercises = userExercises.filter((exercise) => exercise !== undefined) as Exercise[];
                 setUserData(filteredUserExercises);
 

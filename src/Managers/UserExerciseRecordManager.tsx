@@ -18,7 +18,6 @@ function UserExerciseRecordManager() {
     
             const firstDoc = queryResults.docs[0];
             const userExerciseRecordData: UserExerciseRecord = firstDoc.data() as UserExerciseRecord;
-            console.log("Please be one:", userExerciseRecordData);
             return userExerciseRecordData;
         } catch (exception) {
             console.error("Error getting Records: ", exception);
@@ -96,36 +95,28 @@ function UserExerciseRecordManager() {
     const PRanator = async (exerciseID: string, rep: number, weight: number) => {
 
         const pulledRecord = await getUserExerciseRecord(exerciseID) as unknown as UserExerciseRecord;
-        console.log("PulledRecord:", pulledRecord)
 
         if (!pulledRecord) {
-            console.log("Trying to add");
             await addUserExerciseRecord(exerciseID, rep, weight);
             return "New";
         } 
 
         const recordWeight = pulledRecord.MaxWeight;
-        console.log("If working use this:", pulledRecord.MaxWeight);
-        console.log("PulledWeight:", recordWeight, "SubWeight:", weight)
         const recordReps = pulledRecord.MaxVolumeReps;
 
         if (rep > recordReps && weight > recordWeight) {
-            console.log("Both");
             const category = "Both";
             await updateUserExerciseRecord(exerciseID, rep, weight, category);
             return "Both";
         } else if (rep > recordReps) {
-            console.log("Reps");
             const category = "Reps";
             await updateUserExerciseRecord(exerciseID, rep, weight, category);
             return "Volume";
         } else if (weight > recordWeight) {
-            console.log("Weight");
             const category = "Weight";
             await updateUserExerciseRecord(exerciseID, rep, weight, category);
             return "Weight";
         } else {
-            console.log("None");
             return "None";
         }
 
