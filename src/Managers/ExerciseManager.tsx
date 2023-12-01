@@ -81,7 +81,7 @@ function ExerciseManager(){
         //deleteDoc
     }
 
-    return { addExercise, getUserExercises }
+    return { addExercise, getUserExercises, getExercisebyID }
 }
 
 export default ExerciseManager;

@@ -142,17 +142,78 @@ body {
   pointer-events: none;
 }
 
+/************ PlanCard.tsx ***********/
+.plan-card-box{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.plan-card{
+  display: flex;
+  flex-direction: column;
+  width: 300px; 
+  height: 400px; 
+  margin: 10px; 
+  background: #fff;
+  filter: drop-shadow(darkgray 0 0px 5px);
+  border-radius: 15px;
+  text-align: center; 
+  padding: 10px; 
+}
+
+.plan-card-button{
+  margin-top: auto;
+  background: var(--primary-color);
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  filter: drop-shadow(lightgrey -4px 4px);
+  cursor: pointer;
+}
+
+.exercise-details {
+  display: flex;
+  flex-direction: column;
+ 
+}
+
+.exercise-title {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.plan-sets {
+  order: 2;
+  
+}
+
+.plan-exercise {
+  text-align: left;
+  order: 1;
+  
+}
+
 /************ StartWorkout.tsx ***********/
+
 
   .start-workout-header {
     padding: 20px 50px;
   }
 
+  
   .start-workout-body { 
     border-block: 5px solid black;
     margin: 0 20px;
     filter: drop-shadow(lightgrey -1px 3px);
   }
+  
 
   .start-blank-workout-button-container {
     display: inline-flex;

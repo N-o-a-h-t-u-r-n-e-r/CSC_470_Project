@@ -57,7 +57,12 @@ const WorkoutTable = (props: Props) => {
         setAddSetLoading(false);
     }
 
+    
     return(
+        <div>
+
+        </div>
+        /*
         <>
             {showExerciseSearch && <ExerciseSearch setShowExerciseSearch={handleShowExerciseSearch} handleAddExercise={handleAddExercise} />}
             <div className="workout-table-header">
@@ -73,17 +78,17 @@ const WorkoutTable = (props: Props) => {
                             <p className="exercise-title">{exercise.Title}</p>
                         </div>
                         <div className="exercise-column">
-                            {exercise.SetIDs.split(',').map((set,setIndex) => (
+                            {exercise.SetID.split(',').map((set,setIndex) => (
                                 <input key={`exercise-${exercise.Title}-set-input-${setIndex}`} type="number" className="exercise-number-input" placeholder={"12"}></input>
                             ))}
                         </div>
                         <div className="exercise-column">
-                            {exercise.SetIDs.split(',').map((set,setIndex) => (
+                            {exercise.SetID.split(',').map((set,setIndex) => (
                                 <input key={`exercise-${exercise.Title}-rep-input-${setIndex}`} type="number" className="exercise-number-input" placeholder={"100"}></input>
                             ))}
                         </div>
                         <div className="exercise-column">
-                            {exercise.SetIDs.split(',').map((set,setIndex) => (
+                            {exercise.SetID.split(',').map((set,setIndex) => (
                                 <input key={`exercise-${exercise.Title}-copmleted-input-${setIndex}`} type="checkbox" className="exercise-checkbox-input"></input>
                             ))}
                         </div>
@@ -97,7 +102,9 @@ const WorkoutTable = (props: Props) => {
                 <button className="add-exercise-button" onClick={() => handleShowExerciseSearch(true)}>Add Exercise</button>
             </div>
         </>
+        */
     );
+    
 }
 
 export default WorkoutTable;
