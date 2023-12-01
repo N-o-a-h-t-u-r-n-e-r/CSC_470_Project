@@ -49,8 +49,6 @@ const WorkoutInProgress = (props: Props) => {
         let exercisesWithSets = [] as Exercise[];
         let completedSetsWithRepWeight = [] as {SetIndex: number, ExerciseIndex: number, Reps: number, Weight: number}[];
 
-        console.log("All Exercises:", exercises);
-        console.log("completed sets:", completedSets)
 
         exercises.forEach((e, index) => {
             let hasCompletedSets = false;
