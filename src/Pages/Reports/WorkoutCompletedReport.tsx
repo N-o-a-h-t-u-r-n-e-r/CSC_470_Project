@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Workout } from "../../Models/Workout";
+import { Exercise } from "../../Models/Exercise";
+import { Set } from '../../Models/Set';
+import SetManager from '../../Managers/SetManager';
+import ExerciseManager from '../../Managers/ExerciseManager';
+import UserExerciseRecordManager from '../../Managers/UserExerciseRecordManager';
 
-interface Exercise {
-    title: string;
-    sets: number;
-    reps: number;
-    weight: number
-}
 interface Prs {
     title: string;
     volume: number;
@@ -14,220 +14,144 @@ interface Prs {
 }
 
 interface Props {
-    workoutTitle: string;
+    workout?: Workout;
     time: number;
-    trigger: boolean;
-    setTrigger: (value: boolean) => void;
-    exercises: Exercise[];
+    handleClose: () => void;
     pr: Prs[] | null;
-
 }
 
 const WorkoutCompletedReport = (props: Props) => {
+    const setManager = SetManager();
+    const exerciseManager = ExerciseManager();
+    const userExerciseRecordManager = UserExerciseRecordManager();
+    const [userData, setUserData] = useState<Exercise[] | null>(null);
+    const [prsResults, setPrsResults] = useState<string[][] | null>(null);
 
-    //Display time in a HH:MM:SS fashion from a still number.
-    const hours = Math.floor(props.time / 3600);
-    const minutes = Math.floor((props.time % 3600) / 60);
-    const seconds = props.time % 60;
-    const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    useEffect(() => {
+        const fetchUserExercises = async () => {
+            try {
+                // For testing purposes
+                const dummyExerciseIDs = ['I7tZY7B6Gdy2GWV167SL', 'rjlIJaWIb6SaJ4ggZefX'];
 
-    //const [workout, setWorkout] = useState(props.workout);
+                // dummyvalue or get ExerciseIDs from workout if its available.
+                const exerciseIds = props.workout?.ExerciseIDs ? props.workout.ExerciseIDs.split(',') : dummyExerciseIDs;
 
-    return (props.trigger) ? (
+                const userExercises = await Promise.all(
+                    exerciseIds.map(async (exerciseId) => {
+                        const exercise = await exerciseManager.getExercisebyID(exerciseId.trim());
+
+                        const sets = await setManager.getSets(exerciseId.trim());
+
+                        const prResults = await Promise.all(
+                            sets.map(async (set) => userExerciseRecordManager.PRanator(exercise?.ExerciseID ? exercise.ExerciseID.trim() : '', set.NumberReps, set.Weight))
+                        );
+                        setPrsResults((prevResults) => (prevResults ? [...prevResults, prResults] : [prResults]));
+
+
+
+                        return { ...exercise, sets };
+                    })
+                );
+
+                const filteredUserExercises = userExercises.filter((exercise) => exercise !== undefined) as Exercise[];
+                setUserData(filteredUserExercises);
+
+            } catch (error) {
+                console.error('Error fetching user exercises:', error);
+            }
+
+        };
+
+        fetchUserExercises();
+
+
+    }, [props.workout]);
+
+
+    return (
         <div className="reports-popup-box">
             <div className="reports-box">
-             <button className="reports-workout-button" onClick={() => props.setTrigger(false)}> X </button>
+                <button className="reports-workout-button" onClick={() => props.handleClose()}> X </button>
                 <div className="reports-header">
-                    <h1>Workout "{props.workoutTitle}" completed!</h1>
+                    <h1>{props.workout?.Title !== undefined ? `Workout "${props.workout?.Title}" completed!` : "Workout Completed"}</h1>
                 </div>
                 <div className="reports-divider"></div>
-                
-                
+
                 <div className="reports-time-left">
                     <p>Time:</p>
                 </div>
 
                 <div className="reports-time-right">
-                    <p>{formattedTime}</p>
+                    <p>{new Date(props.time * 1000).toISOString().slice(11, 19)}</p>
                 </div>
-                
+
                 <div className="reports-exercise-list-header">
                     <p>Exercises Completed:</p>
                 </div>
-                
-                <div className="reports-exercise-list">
-                    {props.exercises.map((exercise, index) => (
-                        <ul key={index}>
-                            <div className="exercise-info">
-                                <div className="list-title">{exercise.title}:</div>
-                                <div className="setsNreps">{exercise.sets}x{exercise.reps}</div>
-                            </div>
-                        </ul>
-                    ))}
-                </div>
 
-                {props.pr !== null && props.pr.length > 0 && (
-                    <>
+                {userData !== null ?
+                    <div className="reports-exercise-list">
+                        {userData.map((exercise, index) => (
+                            <ul key={index}>
+                                <div className="exercise-info">
+                                    <div className="list-title">{exercise.Title}:</div>
+                                    <div className="setsNreps">
+                                        {exercise.sets.map((set: Set, setIndex: number) => (
+                                            <div key={setIndex}>
+                                                {set.NumberReps} x {set.Weight}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </ul>
+                        ))}
+                    </div>
+                    :
+                    <div className="list-title">None</div>
+                }
+
+                {userData !== null ?
+                
+                    <div className="reports-exercise-list">
                         <div className="reports-exercise-pr">
                             <p>PRs set:</p>
                         </div>
-                        {props.pr.map((prs, index) => (
-                        <ul key={index}>
-                            
-                            <div className="pr-info">
-                                <div className="pr-title"> 
-                                    {prs.title}: 
-                                </div>
-                                <div className="pr-content">
-                                    {prs.weight}lb x {prs.volume} - {prs.category}
-                                </div>
-                            </div>
-                        </ul>
-                        ))}
+                        {userData.map((exercise, index) => {
+                            const exercisePrSet = exercise.sets.some((set: Set, setIndex: number) => {
+                                const prResult = prsResults && prsResults[index] && prsResults[index][setIndex];
+                                return prResult !== "None";
+                            });
 
-                    </>
-                )}                
+                            return (
+                                <ul key={index}>
+                                    <div className="pr-info">
+                                        {exercisePrSet && <div className="pr-title">{exercise.Title}:</div>}
+                                        <div className="pr-content">
+                                            {exercise.sets.map((set: Set, setIndex: number) => {
+                                                const prResult = prsResults && prsResults[index] && prsResults[index][setIndex];
+                                                if (prResult !== "None") {
+                                                    return (
+                                                        <div key={setIndex}>
+                                                            {set.NumberReps} x {set.Weight} : {prResult}
+                                                        </div>
+                                                    );
+                                                } else {
+                                                    return null; // Don't render if PR result is "None"
+                                                }
+                                            })}
+                                        </div>
+                                    </div>
+                                </ul>
+                            );
+                        })}
+                    </div>
+                    : <div className="list-title">None</div>
+                }
+
             </div>
         </div>
-    ) : null;
+    );
 }
 
 export default WorkoutCompletedReport;
-
-
-/* need to import usestate for button
-import React, { useContext, useState } from "react";
-
-
-/* button code
-const [buttonPopup, setButtonPopup] = useState(false);
-
-<button onClick={() => setButtonPopup(true)}>Open Popup</button>
-        <Reports
-          pr={prs}
-          exercises={exercises}
-          trigger={buttonPopup}
-          setTrigger={setButtonPopup}
-          workoutTitle="PROWORKOUT1"
-          time={1000}
-        />
-
-
-
-/* test array for exercises
-const exercises = [
-  {title: 'Bench', sets: 5, reps: 12, weight: 10},
-  {title: 'Squats', sets: 5, reps: 5, weight: 20},
-  {title: 'Curls', sets: 4, reps: 10, weight: 30}
-];
-
-/* test array for Prs
-const prs = [
-  {title: 'Bench', volume: 123, weight: 10, category: "Volume"},
-  {title: 'Squats', volume: 20, weight: 100, category: "Weight"},
-  {title: 'Curls', volume: 10, weight: 30, category: "Mental"}
-]
-
-/* css
-/************ reports.tsx ***********/
-/*
-.reports-popup-box {
-    position: fixed;
-    background-color: rgba(0, 0, 0, 0.5);
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100vh; 
-  
-  
-  }
-  .reports-box {
-      position: relative;
-      width: 50%;
-      min-height: 300px;
-      background-color: #fff;
-      border: 1px solid #999;
-      border-radius: 4px;
-      margin: 20px auto;
-      padding: 20px;
-      overflow: auto;
-    }
-  .reports-divider{
-    border-top: 3px solid #bbb;
-  }
-  .reports-time-left{
-    padding: 10px;
-    float: left;
-  }
-  .reports-time-right{
-    float: right;
-    padding: 10px;
-  }
-  .reports-exercise-list-header{
-    clear: left;
-    padding: 10px;
-  }
-  
-  .reports-exercise-list {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .reports-exercise-list ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .exercise-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: right;
-    padding-right: 10px;
-  }
-  
-  .list-title {
-    padding-left: 30%;
-  }
-  
-  .setsNreps {
-    padding-right: 20%;
-    
-  }
-  
-  .reports-exercise-pr{
-    clear: left;
-    padding: 10px;
-  }
-  .pr-info{
-    display: flex;
-    justify-content: space-between;
-    align-items: right;
-    padding-right: 10px;
-  }
-  .pr-title{
-    padding-left: 30%;
-  }
-  .pr-content{
-    padding-right: 20%;
-  }
-  
-  .reports-workout-button {
-      cursor: pointer;
-      border: 1px solid #999;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      box-sizing: border-box;
-      position: fixed;
-      right: calc(25% - 5px);
-      top: 15px;
-    }
-
-
-
-
-*/
-
-
 

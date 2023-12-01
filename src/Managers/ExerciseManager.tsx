@@ -6,7 +6,18 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 function ExerciseManager(){
     const { user } = useAuth0();
-    const ExerciseCollectionRef = collection(firestore, "Exercise");
+    const UserExerciseCollectionRef = collection(firestore, "User_Exercises");
+    const GlobalExerciseCollectionRef = collection(firestore, "Exercise");
+    const CompletedExerciseCollectionRef = collection(firestore, "Completed_Exercises");
+
+    const addCompletedExercise = async (Exercise: Exercise) => {
+        try {
+            const docRef = await addDoc(CompletedExerciseCollectionRef, Exercise);
+            return docRef.id;
+        } catch (exception) {
+            console.error("Error saving exercise: ", exception );
+        }
+    }
 
     const addExercise = async (title: string, muscleGroup: string, description: string) => {
         try {
@@ -16,9 +27,10 @@ function ExerciseManager(){
                 Description: description,
                 MuscleGroup: muscleGroup,
                 Date: Timestamp.fromDate(new Date()),
+                SetIDs: "",
             } as unknown as Exercise;
 
-            const docRef = await addDoc(ExerciseCollectionRef, exercise);
+            const docRef = await addDoc(UserExerciseCollectionRef, exercise);
 
             const returnExercise = {
                 id: docRef.id,
@@ -27,6 +39,7 @@ function ExerciseManager(){
                 Description: exercise.Description,
                 MuscleGroup: exercise.MuscleGroup,
                 Date: exercise.Date,
+                ExerciseID: docRef.id
             } as unknown as Exercise;
             
             return returnExercise;
@@ -41,11 +54,12 @@ function ExerciseManager(){
 
     const getUserExercises = async () => {
         try {
-            const searchQuery = query(ExerciseCollectionRef, where("UserID", "==", user?.sub));
+            const searchQuery = query(UserExerciseCollectionRef, where("UserID", "==", user?.sub));
             const queryResults = await getDocs(searchQuery);
             
             return queryResults.docs.map((doc: any) => {
                 const exerciseData: Exercise = doc.data() as Exercise;
+                exerciseData.ExerciseID = doc.id
                 return exerciseData;
             });
         } catch (exception) {
@@ -54,7 +68,7 @@ function ExerciseManager(){
     }
 
     const getExercisebyID = async (id: string) => {
-        const docRef = doc(ExerciseCollectionRef, id);
+        const docRef = doc(CompletedExerciseCollectionRef, id);
         try {
             const doc = await getDoc(docRef);
             return doc.data() as Exercise;
@@ -65,11 +79,12 @@ function ExerciseManager(){
     
     const getGlobalExercises = async () => {
         try {
-            const searchQuery = query(ExerciseCollectionRef, where("UserID", "==", "GLOBAL"));
+            const searchQuery = query(GlobalExerciseCollectionRef, where("UserID", "==", "global"));
             const queryResults = await getDocs(searchQuery);
             
             return queryResults.docs.map((doc: any) => {
                 const exerciseData: Exercise = doc.data() as Exercise;
+                exerciseData.ExerciseID = doc.id;
                 return exerciseData;
             });
         } catch (exception) {
@@ -81,7 +96,7 @@ function ExerciseManager(){
         //deleteDoc
     }
 
-    return { addExercise, getUserExercises, getExercisebyID }
+    return { addExercise, addCompletedExercise, getUserExercises, getGlobalExercises, getExercisebyID }
 }
 
 export default ExerciseManager;
