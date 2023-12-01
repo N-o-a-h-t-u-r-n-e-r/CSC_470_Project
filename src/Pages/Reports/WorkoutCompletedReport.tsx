@@ -42,25 +42,26 @@ const WorkoutCompletedReport = (props: Props) => {
                         console.log("this is what's getting searched:", exerciseId);
                         console.log("Exercises:", exercise?.Title)
 
-                        const sets = await setManager.getSets(exerciseId.trim()); // Updated this line
+                        const sets = await setManager.getSets(exerciseId.trim());
 
-               
-                        return { ...exercise, sets };              
+
+                        return { ...exercise, sets };
                     })
                 );
 
                 console.log('User exercises:', userExercises);
                 const filteredUserExercises = userExercises.filter((exercise) => exercise !== undefined) as Exercise[];
                 setUserData(filteredUserExercises);
-                
+
             } catch (error) {
                 console.error('Error fetching user exercises:', error);
             }
+
         };
 
         fetchUserExercises();
-        
-        
+
+
     }, [props.workout]);
 
 
@@ -107,26 +108,31 @@ const WorkoutCompletedReport = (props: Props) => {
                     <div className="list-title">None</div>
                 }
 
-                {props.pr !== null && props.pr.length > 0 &&
+                {userData !== null ?
                     <>
                         <div className="reports-exercise-pr">
                             <p>PRs set:</p>
                         </div>
-                        {props.pr.map((prs, index) => (
+                        {userData.map((exercise, index) => (
                             <ul key={index}>
 
                                 <div className="pr-info">
                                     <div className="pr-title">
-                                        {prs.title}:
+                                        {exercise.Title}:
                                     </div>
                                     <div className="pr-content">
-                                        {prs.weight}lb x {prs.volume} - {prs.category}
+                                        {exercise.sets.map((set: Set, setIndex: number) => (
+                                            <div key={setIndex}>
+                                                {set.NumberReps} x {set.Weight} : {exercise.category}
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                             </ul>
                         ))}
 
                     </>
+                    : ""
                 }
             </div>
         </div>

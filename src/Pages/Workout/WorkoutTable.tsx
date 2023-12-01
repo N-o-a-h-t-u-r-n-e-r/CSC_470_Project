@@ -15,8 +15,8 @@ interface Props {
 
 const WorkoutTable = (props: Props) => {
     const [ exercises, setExercises ] = useState<Exercise[]>([]);
-    const [ reps, setReps ] = useState<{SetIndex: number, Reps: number}[]>([]);
-    const [ weights, setWeights ] = useState<{SetIndex: number, Weight: number}[]>([]);
+    const [ reps, setReps ] = useState<{SetIndex: number, ExerciseIndex: number, Reps: number}[]>([]);
+    const [ weights, setWeights ] = useState<{SetIndex: number, ExerciseIndex: number, Weight: number}[]>([]);
     const [ completedSets, setCompletedSets ] = useState<{SetIndex: number, ExerciseIndex: number, Reps: number, Weight: number}[]>([]);
     const [ showExerciseSearch, setShowExerciseSearch ] = useState(false);
     const [ addSetLoading, setAddSetLoading ] = useState(false);
@@ -33,7 +33,7 @@ const WorkoutTable = (props: Props) => {
         let newCompletedSets = [];
 
         if(checked){
-            newCompletedSets = [...completedSets, { SetIndex: SetIndex, ExerciseIndex: ExerciseIndex, Reps: reps[reps.findIndex(x => x.SetIndex === SetIndex)]?.Reps, Weight: weights[weights.findIndex(x => x.SetIndex === SetIndex)]?.Weight}];
+            newCompletedSets = [...completedSets, { SetIndex: SetIndex, ExerciseIndex: ExerciseIndex, Reps: reps[reps.findIndex(x => x.SetIndex === SetIndex && x.ExerciseIndex === ExerciseIndex)]?.Reps, Weight: weights[weights.findIndex(x => x.SetIndex === SetIndex && x.ExerciseIndex === ExerciseIndex)]?.Weight}];
         } else {
             let existingSets = completedSets;
             existingSets.splice(completedSets.findIndex(x => x.SetIndex === SetIndex), 1);
@@ -63,11 +63,11 @@ const WorkoutTable = (props: Props) => {
         setExercises(newExercises);
     }
 
-    const handleSetReps = (SetIndex: number, Reps: number) => {
-        const idx = reps.findIndex(x => x.SetIndex === SetIndex);
+    const handleSetReps = (SetIndex: number, ExerciseIndex: number, Reps: number) => {
+        const idx = reps.findIndex(x => x.SetIndex === SetIndex && x.ExerciseIndex === ExerciseIndex);
         
         if(idx === -1){
-            const newReps = [...reps, {SetIndex: SetIndex, Reps: Reps}];
+            const newReps = [...reps, {SetIndex: SetIndex, ExerciseIndex: ExerciseIndex, Reps: Reps}];
             setReps(newReps);
         } else {
             let newReps = reps;
@@ -76,11 +76,11 @@ const WorkoutTable = (props: Props) => {
         }
      }
      
-     const handleSetWeights = (SetIndex: number, Weight: number) => {
-        const idx = weights.findIndex(x => x.SetIndex === SetIndex);
+     const handleSetWeights = (SetIndex: number, ExerciseIndex: number, Weight: number) => {
+        const idx = weights.findIndex(x => x.SetIndex === SetIndex && x.ExerciseIndex === ExerciseIndex);
 
         if(idx === -1){
-            const newWeights = [...weights, {SetIndex: SetIndex, Weight: Weight}];
+            const newWeights = [...weights, {SetIndex: SetIndex, ExerciseIndex: ExerciseIndex, Weight: Weight}];
             setWeights(newWeights);
         } else {
             let newWeights = weights;
@@ -108,10 +108,10 @@ const WorkoutTable = (props: Props) => {
                             {exercise.SetIDs.split(',').map((set,setIndex) => (
                                 <div key={`exercise-${exerciseIndex}-set-container-${setIndex}`} className='exercise-set-container'>
                                     <div className="exercise-column">
-                                            <input key={`exercise-${exerciseIndex}-rep-input-${setIndex}`} type="number" className="exercise-number-input" placeholder={"12"} onChange={(e:any) => {handleSetReps(setIndex, parseInt(e.target.value))}}></input>
+                                            <input key={`exercise-${exerciseIndex}-rep-input-${setIndex}`} type="number" className="exercise-number-input" placeholder={"12"} onChange={(e:any) => {handleSetReps(setIndex, exerciseIndex, parseInt(e.target.value))}}></input>
                                     </div>
                                     <div className="exercise-column">
-                                            <input key={`exercise-${exerciseIndex}-weight-input-${setIndex}`} type="number" className="exercise-number-input" placeholder={"100"} onChange={(e:any) => {handleSetWeights(setIndex, parseInt(e.target.value))}}></input>
+                                            <input key={`exercise-${exerciseIndex}-weight-input-${setIndex}`} type="number" className="exercise-number-input" placeholder={"100"} onChange={(e:any) => {handleSetWeights(setIndex, exerciseIndex, parseInt(e.target.value))}}></input>
                                     </div>
                                     <div className="exercise-column">
                                             <input key={`exercise-${exerciseIndex}-copmleted-input-${setIndex}`} type="checkbox" className="exercise-checkbox-input" onClick={(e: any) => {handleMarkSetCompleted(e.target.checked, setIndex, exerciseIndex)}}></input> 
