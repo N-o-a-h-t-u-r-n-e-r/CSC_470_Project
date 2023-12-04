@@ -19,6 +19,7 @@ const WorkoutCompletedReport = (props: Props) => {
     const exerciseManager = ExerciseManager();
     const userExerciseRecordManager = UserExerciseRecordManager();
     const [userData, setUserData] = useState<Exercise[] | null>(null);
+    const [prData, setPrData] = useState<Exercise[] | null>(null);
     const [prsResults, setPrsResults] = useState<string[][] | null>(null);
 
     useEffect(() => {
@@ -62,6 +63,50 @@ const WorkoutCompletedReport = (props: Props) => {
                 }) as Exercise[];
                 console.log(filteredUserExercises);
                 setUserData(filteredUserExercises);
+
+                //grouping all sets by exerciseID
+                const groupedExercises: { [key: string]: Exercise } = {};
+                filteredUserExercises.forEach((exercise) => {
+                    const exerciseId = exercise?.ExerciseID || '';
+                    if (!groupedExercises[exerciseId]) {
+                        groupedExercises[exerciseId] = { ...exercise, sets: [] };
+                    }
+                    groupedExercises[exerciseId].sets = [
+                        ...groupedExercises[exerciseId].sets,
+                        ...exercise.sets,
+                    ];
+                });
+                const uniqueFiltered = Object.values(groupedExercises);
+                console.log("Test", uniqueFiltered)
+                
+                const filteredExercises = uniqueFiltered.map((exercise) => {
+                    const highestReps = Math.max(...exercise.sets.map((set: Set) => set.NumberReps));
+                    const highestWeight = Math.max(...exercise.sets.map((set: Set) => set.Weight));
+                
+                    exercise.sets = exercise.sets.map((set: Set) => {
+                        if (set.NumberReps === highestReps && set.Weight === highestWeight && set.prResults === 'Both') {
+                            return { ...set };
+                        }
+                
+                        if (set.NumberReps === highestReps && set.prResults === 'Both') {
+                            set.prResults = 'Volume';
+                        }
+                
+                        if (set.Weight === highestWeight && set.prResults === 'Both') {
+                            set.prResults = 'Weight';
+                        }
+                
+                        return set;
+                    }).filter((set: Set) => set.NumberReps === highestReps || set.Weight === highestWeight);
+                
+                    return exercise;
+                });
+                
+                console.log("Filtered Exercises", filteredExercises);
+                setPrData(filteredExercises)
+                
+
+
 
             } catch (error) {
                 console.error('Error fetching user exercises:', error);
@@ -119,40 +164,38 @@ const WorkoutCompletedReport = (props: Props) => {
                     <div className="list-title">None</div>
                 }
 
-                {userData !== null ?
+                {prData !== null && prData.length > 0 ?
 
                     <div className="reports-exercise-list">
                         <div className="reports-exercise-pr">
                             <p>PRs set:</p>
                         </div>
-                        {userData.map((exercise, index) => {
-                            const exercisePrSet = exercise.sets.some((set: Set, setIndex: number) => {
-                                const prResult = prsResults && prsResults[index] && prsResults[index][setIndex];
-                                return prResult !== "None";
-                            });
+                        {prData.map((exercise, index) => (
+                            <ul key={index}>
+                            <div className="pr-info">
+                                <div className="pr-title">{exercise.Title}:</div>
+                                <div className="pr-content">
+                                    {exercise.sets.map((set: Set, setIndex: number) => {
+                                        if (set.prResults !== "None") {
+                                            return (
+                                                <div key={setIndex}>
+                                                    {set.NumberReps} x {set.Weight} : {set.prResults}
+                                                </div>
+                                            );
+                                        } else {
+                                            return null; 
+                                        }
+                                    })}
+                                </div>
+                            </div>
+                        </ul>
 
-                            return (
-                                <ul key={index}>
-                                    <div className="pr-info">
-                                        {exercisePrSet && <div className="pr-title">{exercise.Title}:</div>}
-                                        <div className="pr-content">
-                                            {exercise.sets.map((set: Set, setIndex: number) => {
-                                                const prResult = prsResults && prsResults[index] && prsResults[index][setIndex];
-                                                if (prResult !== "None") {
-                                                    return (
-                                                        <div key={setIndex}>
-                                                            {set.NumberReps} x {set.Weight} : {prResult}
-                                                        </div>
-                                                    );
-                                                } else {
-                                                    return null; // Don't render if PR result is "None"
-                                                }
-                                            })}
-                                        </div>
-                                    </div>
-                                </ul>
-                            );
-                        })}
+                        ))}
+
+                            
+                                
+                            
+                    
                     </div>
                     : <div className="list-title">None</div>
                 }
