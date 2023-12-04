@@ -38,7 +38,8 @@ const ExerciseSearch = (props: Props) => {
                         SetID: "",
                         MuscleGroup: x.MuscleGroup,
                         UserID: x.UserID,
-                        Description: x.Description
+                        Description: x.Description,
+                        ExerciseID: x.ExerciseID
                     } as unknown as Exercise);
                 });
             }
