@@ -30,7 +30,7 @@ const WorkoutCompletedReport = (props: Props) => {
                 // dummyvalue or get ExerciseIDs from workout if its available.
                 const exerciseIds = props.workout?.ExerciseIDs ? props.workout.ExerciseIDs.split(',') : dummyExerciseIDs;
 
-              
+
 
                 const userExercises = await Promise.all(
                     exerciseIds.map(async (exerciseId) => {
@@ -41,19 +41,22 @@ const WorkoutCompletedReport = (props: Props) => {
                         const prResults = await Promise.all(
                             sets.map(async (set) => userExerciseRecordManager.PRanator(exercise?.ExerciseID ? exercise.ExerciseID.trim() : '', set.NumberReps, set.Weight))
                         );
+                        sets.forEach((set, index) => {
+                            set.prResults = prResults[index];
+                        });
+
+
                         setPrsResults((prevResults) => (prevResults ? [...prevResults, prResults] : [prResults]));
-                        
 
 
                         return { ...exercise, sets };
                     })
                 );
 
-
                 const filteredUserExercises = userExercises.filter((exercise) => {
                     return (
                         exercise !== undefined &&
-                        exercise.sets !== undefined && 
+                        exercise.sets !== undefined &&
                         exercise.sets.length > 0
                     );
                 }) as Exercise[];
@@ -92,9 +95,9 @@ const WorkoutCompletedReport = (props: Props) => {
                 <div className="reports-exercise-list-header">
                     <p>Exercises Completed:</p>
                 </div>
-                
-                {userData !== null && userData.length > 0 ? 
-                    
+
+                {userData !== null && userData.length > 0 ?
+
                     <div className="reports-exercise-list">
                         {userData.map((exercise, index) => (
                             <ul key={index}>
@@ -103,7 +106,7 @@ const WorkoutCompletedReport = (props: Props) => {
                                     <div className="setsNreps">
                                         {exercise.sets.map((set: Set, setIndex: number) => (
                                             <div key={setIndex}>
-                                                
+
                                                 {set.NumberReps} x {set.Weight}
                                             </div>
                                         ))}
@@ -117,7 +120,7 @@ const WorkoutCompletedReport = (props: Props) => {
                 }
 
                 {userData !== null ?
-                
+
                     <div className="reports-exercise-list">
                         <div className="reports-exercise-pr">
                             <p>PRs set:</p>

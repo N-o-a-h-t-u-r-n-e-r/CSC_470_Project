@@ -1,7 +1,15 @@
 Exercise Search
+
 After Action report not displaying 'none' when no exercises are completed       -fixed
+
 Not entering inputs in workout table indexs counts as not doing a workout
+
 Only entering one input in workout table indexes counts as not doing a workout
+
 workout table indexes can go negative
+
 ExerciseIDs not getting passed to completed_exercises db                        -fixed
+
 Not checking the first index completed makes whole workout null
+
+    ^This is causing the function of adding workouts in workoutinprogress to break.
