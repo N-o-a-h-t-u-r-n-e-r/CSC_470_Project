@@ -61,7 +61,6 @@ const WorkoutCompletedReport = (props: Props) => {
                         exercise.sets.length > 0
                     );
                 }) as Exercise[];
-                console.log(filteredUserExercises);
                 setUserData(filteredUserExercises);
 
                 //grouping all sets by exerciseID
@@ -77,8 +76,7 @@ const WorkoutCompletedReport = (props: Props) => {
                     ];
                 });
                 const uniqueFiltered = Object.values(groupedExercises);
-                console.log("Test", uniqueFiltered)
-                
+
                 const filteredExercises = uniqueFiltered.map((exercise) => {
                     const highestReps = Math.max(...exercise.sets.map((set: Set) => set.NumberReps));
                     const highestWeight = Math.max(...exercise.sets.map((set: Set) => set.Weight));
@@ -101,8 +99,6 @@ const WorkoutCompletedReport = (props: Props) => {
                 
                     return exercise;
                 });
-                
-                console.log("Filtered Exercises", filteredExercises);
                 setPrData(filteredExercises)
                 
 
