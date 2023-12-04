@@ -6,18 +6,12 @@ import SetManager from '../../Managers/SetManager';
 import ExerciseManager from '../../Managers/ExerciseManager';
 import UserExerciseRecordManager from '../../Managers/UserExerciseRecordManager';
 
-interface Prs {
-    title: string;
-    volume: number;
-    weight: number;
-    category: string;
-}
+
 
 interface Props {
     workout?: Workout;
     time: number;
     handleClose: () => void;
-    pr: Prs[] | null;
 }
 
 const WorkoutCompletedReport = (props: Props) => {
@@ -36,6 +30,8 @@ const WorkoutCompletedReport = (props: Props) => {
                 // dummyvalue or get ExerciseIDs from workout if its available.
                 const exerciseIds = props.workout?.ExerciseIDs ? props.workout.ExerciseIDs.split(',') : dummyExerciseIDs;
 
+              
+
                 const userExercises = await Promise.all(
                     exerciseIds.map(async (exerciseId) => {
                         const exercise = await exerciseManager.getExercisebyID(exerciseId.trim());
@@ -46,14 +42,22 @@ const WorkoutCompletedReport = (props: Props) => {
                             sets.map(async (set) => userExerciseRecordManager.PRanator(exercise?.ExerciseID ? exercise.ExerciseID.trim() : '', set.NumberReps, set.Weight))
                         );
                         setPrsResults((prevResults) => (prevResults ? [...prevResults, prResults] : [prResults]));
-
+                        
 
 
                         return { ...exercise, sets };
                     })
                 );
 
-                const filteredUserExercises = userExercises.filter((exercise) => exercise !== undefined) as Exercise[];
+
+                const filteredUserExercises = userExercises.filter((exercise) => {
+                    return (
+                        exercise !== undefined &&
+                        exercise.sets !== undefined && 
+                        exercise.sets.length > 0
+                    );
+                }) as Exercise[];
+                console.log(filteredUserExercises);
                 setUserData(filteredUserExercises);
 
             } catch (error) {
@@ -88,8 +92,9 @@ const WorkoutCompletedReport = (props: Props) => {
                 <div className="reports-exercise-list-header">
                     <p>Exercises Completed:</p>
                 </div>
-
-                {userData !== null ?
+                
+                {userData !== null && userData.length > 0 ? 
+                    
                     <div className="reports-exercise-list">
                         {userData.map((exercise, index) => (
                             <ul key={index}>
@@ -98,6 +103,7 @@ const WorkoutCompletedReport = (props: Props) => {
                                     <div className="setsNreps">
                                         {exercise.sets.map((set: Set, setIndex: number) => (
                                             <div key={setIndex}>
+                                                
                                                 {set.NumberReps} x {set.Weight}
                                             </div>
                                         ))}

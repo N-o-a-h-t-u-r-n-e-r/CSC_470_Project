@@ -1,1 +1,5 @@
 Exercise Search
+After Action report not displaying 'none' when no exercises are completed
+Not entering inputs in workout table indexs counts as not doing a workout
+Only entering one input in workout table indexes counts as not doing a workout
+workout table indexes can go negative
