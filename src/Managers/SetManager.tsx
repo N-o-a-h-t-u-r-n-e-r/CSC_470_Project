@@ -1,17 +1,18 @@
 import { Set } from "../Models/Set";
 
-import { addDoc, updateDoc, getDocs, doc, deleteDoc, collection, Timestamp, query, where } from "@firebase/firestore"
+import { addDoc, updateDoc, getDoc, getDocs, doc, deleteDoc, collection, Timestamp, query, where } from "@firebase/firestore"
 import { firestore } from "../firebase_setup/firebase"
 import { useAuth0 } from "@auth0/auth0-react";
 import { CompletedSet } from "../Models/CompletedSet";
 
 function SetManager(){
     const { user } = useAuth0();
-    const SetCollectionRef = collection(firestore, "Set");
+    const CompletedSetCollectionRef = collection(firestore, "Set");
+    const GlobalSetCollectionRef = collection(firestore, "Global_Set")
 
-    const addSet = async (CompletedSet: CompletedSet) => {
+    const addCompletedSet = async (CompletedSet: CompletedSet) => {
         try {
-            const docRef = await addDoc(SetCollectionRef, CompletedSet);
+            const docRef = await addDoc(CompletedSetCollectionRef, CompletedSet);
       
             return docRef.id;
         } catch (exception) {
@@ -23,10 +24,10 @@ function SetManager(){
         //updateDoc
     }
 
-    const getSets = async (forExerciseID: string) => {
+    const getCompletedSets = async (forExerciseID: string) => {
         try {
             // Query the Set collection where ForExerciseID matches the provided ID
-            const q = query(SetCollectionRef, where("ForExerciseID", "==", forExerciseID));
+            const q = query(CompletedSetCollectionRef, where("ForExerciseID", "==", forExerciseID));
             
             // Get the documents that match the query
             const querySnapshot = await getDocs(q);
@@ -47,11 +48,21 @@ function SetManager(){
         }
     }
 
+    const getGlobalSetbyID = async (id: string) => {
+        const docRef = doc(GlobalSetCollectionRef, id);
+        try {
+            const doc = await getDoc(docRef);
+            return doc.data() as Set;
+        } catch (exception) {
+            console.error("Error getting set: ", exception );
+        }
+    }
+
     const deleteSet = async (exerciseID: number) => {
         //deleteDoc
     }
 
-    return { addSet, getSets }
+    return { addCompletedSet, getCompletedSets, getGlobalSetbyID }
 }
 
 export default SetManager;

@@ -68,8 +68,28 @@ function ExerciseManager(){
         }
     }
 
-    const getExercisebyID = async (id: string) => {
+    const getCompletedExercisebyID = async (id: string) => {
         const docRef = doc(CompletedExerciseCollectionRef, id);
+        try {
+            const doc = await getDoc(docRef);
+            return doc.data() as Exercise;
+        } catch (exception) {
+            console.error("Error getting exercises: ", exception );
+        }
+    }
+
+    const getUserExercisebyID = async (id: string) => {
+        const docRef = doc(UserExerciseCollectionRef, id);
+        try {
+            const doc = await getDoc(docRef);
+            return doc.data() as Exercise;
+        } catch (exception) {
+            console.error("Error getting exercises: ", exception );
+        }
+    }
+
+    const getGlobalExercisebyID = async (id: string) => {
+        const docRef = doc(GlobalExerciseCollectionRef, id);
         try {
             const doc = await getDoc(docRef);
             return doc.data() as Exercise;
@@ -97,7 +117,7 @@ function ExerciseManager(){
         //deleteDoc
     }
 
-    return { addExercise, addCompletedExercise, getUserExercises, getGlobalExercises, getExercisebyID }
+    return { addExercise, addCompletedExercise, getUserExercises, getGlobalExercises, getCompletedExercisebyID, getUserExercisebyID, getGlobalExercisebyID }
 }
 
 export default ExerciseManager;

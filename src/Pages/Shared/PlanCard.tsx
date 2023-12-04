@@ -6,8 +6,8 @@ import { firestore } from "../../firebase_setup/firebase"
 import { useAuth0 } from "@auth0/auth0-react";
 
 interface Props {
-    setShowExerciseAdd: (showExerciseAdd: boolean) => void,
-    returnExercise: () => void
+    setShowExerciseAdd?: (showExerciseAdd: boolean) => void,
+    returnPlan: (plan: Plan) => void
 }
 
 
@@ -28,8 +28,7 @@ const getExercisebyID = async (id: string) => {
     }
   };
 
-const PlanCard = () => {
-
+const PlanCard = (props: Props) => {
 
     const [exerciseList, setExerciseList] = useState<Exercise[]>([]);
 
@@ -89,7 +88,7 @@ const PlanCard = () => {
                     );
                   })}
               </p>
-              <button className="plan-card-button">Start</button>
+              <button className="plan-card-button" onClick={() => props.returnPlan(plan)}>Start</button>
             </div>
           ))}
         </div>

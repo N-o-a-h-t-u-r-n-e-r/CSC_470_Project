@@ -10,6 +10,7 @@ import ExerciseManager from "../../Managers/ExerciseManager";
 import SetManager from "../../Managers/SetManager";
 import { useAuth0 } from "@auth0/auth0-react";
 import WorkoutManager from "../../Managers/WorkoutManager";
+import { ExerciseWithSet } from "../../Models/ExerciseWithSet";
 
 interface Props {
     workout?: Workout,
@@ -20,7 +21,7 @@ const WorkoutInProgress = (props: Props) => {
     const [timerRunning, setTimerRunning] = useState(true);
 
     const [workout, setWorkout] = useState(props.workout);
-    const [ exercises, setExercises ] = useState<Exercise[]>([]);
+    const [ exercises, setExercises ] = useState<ExerciseWithSet[]>([]);
     const [ completedSets, setCompletedSets ] = useState<{SetIndex: number, ExerciseIndex: number, Reps: number, Weight: number}[]>([]);
 
     const [workoutCompleted, setWorkoutCompleted] = useState(false);
@@ -58,9 +59,17 @@ const WorkoutInProgress = (props: Props) => {
                     completedSetsWithRepWeight.push(s);
                 }
             })
+            
+            const newExercise = {
+                Title: e.Title,
+                Description: e.Description,
+                Date: e.Date,
+                MuscleGroup: e.MuscleGroup,
+                Sets: e.Sets.join(','),
+            } as unknown as Exercise;
 
             if(hasCompletedSets)
-             exercisesWithSets.push(e);
+                exercisesWithSets.push(newExercise);
         })
 
         let NewExerciseIDs = "";
@@ -94,7 +103,7 @@ const WorkoutInProgress = (props: Props) => {
                         }
                     } as CompletedSet;
     
-                    await setManager.addSet(completedSet);                  
+                    await setManager.addCompletedSet(completedSet);                  
                 }
             } catch (error) {
                 console.error("Error adding exercise/set: ", error);
@@ -135,7 +144,7 @@ const WorkoutInProgress = (props: Props) => {
                     <button className="end-workout" onClick={handleEndWorkout}>END</button>
                 </div>
                 <div className="body">
-                    <WorkoutTable existingWorkout={workout} setExercises={(Exercises: Exercise[]) => setExercises(Exercises)} setCompletedSets={(CompletedSets: {SetIndex: number, ExerciseIndex: number, Reps: number, Weight: number}[]) => setCompletedSets(CompletedSets)} setShowExerciseSearch={setShowExerciseSearch} />
+                    <WorkoutTable existingWorkout={workout} setExercises={(Exercises: ExerciseWithSet[]) => setExercises(Exercises)} setCompletedSets={(CompletedSets: {SetIndex: number, ExerciseIndex: number, Reps: number, Weight: number}[]) => setCompletedSets(CompletedSets)} setShowExerciseSearch={setShowExerciseSearch} />
                 </div>
             </div>
             

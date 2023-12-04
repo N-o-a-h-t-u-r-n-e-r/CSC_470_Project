@@ -35,9 +35,9 @@ const WorkoutCompletedReport = (props: Props) => {
 
                 const userExercises = await Promise.all(
                     exerciseIds.map(async (exerciseId) => {
-                        const exercise = await exerciseManager.getExercisebyID(exerciseId.trim());
+                        const exercise = await exerciseManager.getCompletedExercisebyID(exerciseId.trim());
 
-                        const sets = await setManager.getSets(exerciseId.trim());
+                        const sets = await setManager.getCompletedSets(exerciseId.trim());
 
                         const prResults = await Promise.all(
                             sets.map(async (set) => userExerciseRecordManager.PRanator(exercise?.ExerciseID ? exercise.ExerciseID.trim() : '', set.NumberReps, set.Weight))
