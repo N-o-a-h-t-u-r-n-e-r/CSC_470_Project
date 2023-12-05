@@ -106,7 +106,6 @@ const WorkoutCompletedReport = (props: Props) => {
                     .filter((exercise) => exercise.sets.length > 0); // Filter out exercises with no sets
 
                 setPrData(filteredExercises)
-                console.log("Should be empty:", filteredExercises)
 
 
 

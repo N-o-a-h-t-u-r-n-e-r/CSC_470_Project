@@ -138,7 +138,9 @@ const WorkoutTable = (props: Props) => {
                                     Date: globalExercise.Date,
                                     MuscleGroup: globalExercise.MuscleGroup,
                                     Sets: sets.length > 0 ? sets : [],
-                                } as ExerciseWithSet;
+                                    ExerciseID: trimmedID    
+                                } as unknown as ExerciseWithSet;
+
                             }else if (userExercise) {
                                 // implement exercise & set for user plan
                             }
@@ -154,8 +156,8 @@ const WorkoutTable = (props: Props) => {
                 } catch (error) {
                     // Handle errors if needed
                 }
-                console.log(newExercises);
                 setExercises(newExercises);
+                props.setExercises(newExercises)
             }
         };
     
