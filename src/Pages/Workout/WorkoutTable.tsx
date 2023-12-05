@@ -45,14 +45,16 @@ const WorkoutTable = (props: Props) => {
         setCompletedSets(newCompletedSets);
         props.setCompletedSets(newCompletedSets);
     }
-
+    
     const handleAddExercise = (exerciseToAdd: Exercise) => {
+        console.log("Does it have an exerciseID?", exerciseToAdd)
         const newExerciseWithSets = {
             Title: exerciseToAdd.Title,
             Description: exerciseToAdd.Description,
             Date: exerciseToAdd.Date,
             MuscleGroup: exerciseToAdd.MuscleGroup,
-            Sets: [{NumberReps: 12, Weight: 100}]
+            Sets: [{NumberReps: 12, Weight: 100}],
+            ExerciseID: exerciseToAdd.ExerciseID
         } as unknown as ExerciseWithSet;
         const newExercises = [...exercises, newExerciseWithSets];
         setExercises(newExercises);

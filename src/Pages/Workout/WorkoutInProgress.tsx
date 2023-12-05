@@ -59,13 +59,14 @@ const WorkoutInProgress = (props: Props) => {
                     completedSetsWithRepWeight.push(s);
                 }
             })
-            
+            console.log("But does this have one too?", e)
             const newExercise = {
                 Title: e.Title,
                 Description: e.Description,
                 Date: e.Date,
                 MuscleGroup: e.MuscleGroup,
                 Sets: e.Sets.join(','),
+                ExerciseID: e.ExerciseID
             } as unknown as Exercise;
 
             if(hasCompletedSets)
