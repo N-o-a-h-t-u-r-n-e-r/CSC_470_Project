@@ -45,14 +45,16 @@ const WorkoutTable = (props: Props) => {
         setCompletedSets(newCompletedSets);
         props.setCompletedSets(newCompletedSets);
     }
-
+    
     const handleAddExercise = (exerciseToAdd: Exercise) => {
+        console.log("Does it have an exerciseID?", exerciseToAdd)
         const newExerciseWithSets = {
             Title: exerciseToAdd.Title,
             Description: exerciseToAdd.Description,
             Date: exerciseToAdd.Date,
             MuscleGroup: exerciseToAdd.MuscleGroup,
-            Sets: [{NumberReps: 12, Weight: 100}]
+            Sets: [{NumberReps: 12, Weight: 100}],
+            ExerciseID: exerciseToAdd.ExerciseID
         } as unknown as ExerciseWithSet;
         const newExercises = [...exercises, newExerciseWithSets];
         setExercises(newExercises);
@@ -136,7 +138,9 @@ const WorkoutTable = (props: Props) => {
                                     Date: globalExercise.Date,
                                     MuscleGroup: globalExercise.MuscleGroup,
                                     Sets: sets.length > 0 ? sets : [],
-                                } as ExerciseWithSet;
+                                    ExerciseID: trimmedID    
+                                } as unknown as ExerciseWithSet;
+
                             }else if (userExercise) {
                                 // implement exercise & set for user plan
                             }
@@ -152,8 +156,8 @@ const WorkoutTable = (props: Props) => {
                 } catch (error) {
                     // Handle errors if needed
                 }
-                console.log(newExercises);
                 setExercises(newExercises);
+                props.setExercises(newExercises)
             }
         };
     

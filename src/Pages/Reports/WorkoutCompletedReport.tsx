@@ -77,30 +77,36 @@ const WorkoutCompletedReport = (props: Props) => {
                 });
                 const uniqueFiltered = Object.values(groupedExercises);
 
-                const filteredExercises = uniqueFiltered.map((exercise) => {
-                    const highestReps = Math.max(...exercise.sets.map((set: Set) => set.NumberReps));
-                    const highestWeight = Math.max(...exercise.sets.map((set: Set) => set.Weight));
-                
-                    exercise.sets = exercise.sets.map((set: Set) => {
-                        if (set.NumberReps === highestReps && set.Weight === highestWeight && set.prResults === 'Both') {
-                            return { ...set };
-                        }
-                
-                        if (set.NumberReps === highestReps && set.prResults === 'Both') {
-                            set.prResults = 'Volume';
-                        }
-                
-                        if (set.Weight === highestWeight && set.prResults === 'Both') {
-                            set.prResults = 'Weight';
-                        }
-                
-                        return set;
-                    }).filter((set: Set) => set.NumberReps === highestReps || set.Weight === highestWeight);
-                
-                    return exercise;
-                });
+                const filteredExercises = uniqueFiltered
+                    .map((exercise) => {
+                        const highestReps = Math.max(...exercise.sets.map((set: Set) => set.NumberReps));
+                        const highestWeight = Math.max(...exercise.sets.map((set: Set) => set.Weight));
+
+                        exercise.sets = exercise.sets
+                            .map((set: Set) => {
+                                if (set.NumberReps === highestReps && set.Weight === highestWeight && set.prResults === 'Both') {
+                                    return { ...set };
+                                }
+
+                                if (set.NumberReps === highestReps && set.prResults === 'Both') {
+                                    set.prResults = 'Volume';
+                                }
+
+                                if (set.Weight === highestWeight && set.prResults === 'Both') {
+                                    set.prResults = 'Weight';
+                                }
+
+                                return set;
+                            })
+                            .filter((set: Set) => set.NumberReps === highestReps || set.Weight === highestWeight)
+                            .filter((set: Set) => set.prResults !== 'None'); // Filter out sets with prResults 'None'
+
+                        return exercise;
+                    })
+                    .filter((exercise) => exercise.sets.length > 0); // Filter out exercises with no sets
+
                 setPrData(filteredExercises)
-                
+
 
 
 
@@ -168,32 +174,34 @@ const WorkoutCompletedReport = (props: Props) => {
                         </div>
                         {prData.map((exercise, index) => (
                             <ul key={index}>
-                            <div className="pr-info">
-                                <div className="pr-title">{exercise.Title}:</div>
-                                <div className="pr-content">
-                                    {exercise.sets.map((set: Set, setIndex: number) => {
-                                        if (set.prResults !== "None") {
-                                            return (
-                                                <div key={setIndex}>
-                                                    {set.NumberReps} x {set.Weight} : {set.prResults}
-                                                </div>
-                                            );
-                                        } else {
-                                            return null; 
-                                        }
-                                    })}
-                                </div>
-                            </div>
-                        </ul>
+                                {exercise.sets.some((set: Set) => set.prResults !== "None") && (
+                                    <div className="pr-info">
+                                        <div className="pr-title">{exercise.Title}:</div>
+                                        <div className="pr-content">
+                                            {exercise.sets.map((set: Set, setIndex: number) => {
+                                                if (set.prResults !== "None") {
+                                                    return (
+                                                        <div key={setIndex}>
+                                                            {set.NumberReps} x {set.Weight} : {set.prResults}
+                                                        </div>
+                                                    );
+                                                } else {
+                                                    return null;
+                                                }
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+                            </ul>
 
                         ))}
 
-                            
-                                
-                            
-                    
+
+
+
+
                     </div>
-                    : <div className="list-title">None</div>
+                    : <div className="list-title"></div>
                 }
 
             </div>
