@@ -46,13 +46,13 @@ const WorkoutTable = (props: Props) => {
         props.setCompletedSets(newCompletedSets);
     }
 
-    const handleAddExercise = async (exerciseToAdd: Exercise) => {
+    const handleAddExercise = (exerciseToAdd: Exercise) => {
         const newExerciseWithSets = {
             Title: exerciseToAdd.Title,
             Description: exerciseToAdd.Description,
             Date: exerciseToAdd.Date,
             MuscleGroup: exerciseToAdd.MuscleGroup,
-            Sets: ["0"]
+            Sets: [{NumberReps: 12, Weight: 100}]
         } as unknown as ExerciseWithSet;
         const newExercises = [...exercises, newExerciseWithSets];
         setExercises(newExercises);
@@ -60,15 +60,17 @@ const WorkoutTable = (props: Props) => {
         handleShowExerciseSearch(false);
     }
 
-    const handleaddCompletedSet = async (exerciseIndex: number) => {
-        const currentSetIDs = exercises[exerciseIndex].SetID;
-        const lastSetID = parseInt(currentSetIDs[currentSetIDs.length - 1]) + 1
-        const newSetID = lastSetID.toString();
+    const handleaddCompletedSet = (exerciseIndex: number) => {
+        console.log(exercises[exerciseIndex])
+        const currentSetIDs = exercises[exerciseIndex].Sets;
+        const newSetID = {NumberReps: 12, Weight: 100} as Set;
         const newSetIDs = [...currentSetIDs, newSetID];
         
         let newExercises = exercises;
         let updatedExercise = newExercises[exerciseIndex];
-        updatedExercise.SetID = newSetIDs;
+        console.log(updatedExercise.Sets);
+        updatedExercise.Sets = newSetIDs;
+        console.log(newSetIDs);
         setExercises(newExercises);
     }
 
