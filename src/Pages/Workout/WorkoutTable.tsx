@@ -78,6 +78,10 @@ const WorkoutTable = (props: Props) => {
 
     const handleSetReps = (SetIndex: number, ExerciseIndex: number, Reps: number) => {
         const idx = reps.findIndex(x => x.SetIndex === SetIndex && x.ExerciseIndex === ExerciseIndex);
+
+        let newExercises = exercises;
+        newExercises[ExerciseIndex].Sets[SetIndex].NumberReps = Reps;
+        setExercises(newExercises);
         
         if(idx === -1){
             const newReps = [...reps, {SetIndex: SetIndex, ExerciseIndex: ExerciseIndex, Reps: Reps}];
@@ -91,6 +95,10 @@ const WorkoutTable = (props: Props) => {
      
      const handleSetWeights = (SetIndex: number, ExerciseIndex: number, Weight: number) => {
         const idx = weights.findIndex(x => x.SetIndex === SetIndex && x.ExerciseIndex === ExerciseIndex);
+
+        let newExercises = exercises;
+        newExercises[ExerciseIndex].Sets[SetIndex].Weight = Weight;
+        setExercises(newExercises);
 
         if(idx === -1){
             const newWeights = [...weights, {SetIndex: SetIndex, ExerciseIndex: ExerciseIndex, Weight: Weight}];
