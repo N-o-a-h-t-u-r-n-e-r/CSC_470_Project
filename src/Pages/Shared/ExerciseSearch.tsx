@@ -73,8 +73,8 @@ const ExerciseSearch = (props: Props) => {
                             <div className="results-list">
                                 {exercises.length > 0 ?
                                     <div>
-                                        {exercises.filter(x => x.Title.toLowerCase().includes(searchString.toLowerCase())).map((item, index) => (
-                                            <div key={`result-option-${index}`} className="result-option" onClick={() => props.handleAddExercise(exercises[index])}>{item.Title}</div>
+                                        {exercises.filter(x => x.Title.toLowerCase().includes(searchString.toLowerCase())).map((item) => (
+                                           <div key={`result-option-${item.ExerciseID}`} className="result-option" onClick={() => props.handleAddExercise(item)}>{item.Title}</div>
                                         ))}
                                     </div>
                                 :

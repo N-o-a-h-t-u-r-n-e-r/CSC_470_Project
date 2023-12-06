@@ -1,4 +1,4 @@
-Exercise Search
+Exercise Search                                                                 -fixed
 
 After Action report not displaying 'none' when no exercises are completed       -fixed
 
