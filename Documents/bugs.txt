@@ -13,3 +13,5 @@ ExerciseIDs not getting passed to completed_exercises db                        
 Not checking the first index completed makes whole workout null
 
     ^This is causing the function of adding workouts in workoutinprogress to break.
+
+After action report, only exercises edited are being displayed
