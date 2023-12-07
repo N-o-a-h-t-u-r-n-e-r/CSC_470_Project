@@ -28,7 +28,7 @@ const getExercisebyID = async (id: string) => {
     }
   };
 
-const PlanCard = () => {
+const UserPlanCard = () => {
 
 
     const [exerciseList, setExerciseList] = useState<Exercise[]>([]);
@@ -96,4 +96,4 @@ const PlanCard = () => {
       );
     };
     
-    export default PlanCard;
+    export default UserPlanCard;

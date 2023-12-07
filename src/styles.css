@@ -142,6 +142,22 @@ body {
   pointer-events: none;
 }
 
+
+/************ WorkoutPlans.tsx ***********/
+.workout-plans-header {
+  padding: 20px 50px;
+}
+
+
+.workout-plans-body { 
+  border-block: 5px solid black;
+  margin: 0 20px;
+  filter: drop-shadow(lightgrey -1px 3px);
+}
+
+/*****************************************/
+
+
 /************ PlanCard.tsx ***********/
 .plan-card-box{
   display: flex;
