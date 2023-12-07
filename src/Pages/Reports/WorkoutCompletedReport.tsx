@@ -6,18 +6,12 @@ import SetManager from '../../Managers/SetManager';
 import ExerciseManager from '../../Managers/ExerciseManager';
 import UserExerciseRecordManager from '../../Managers/UserExerciseRecordManager';
 
-interface Prs {
-    title: string;
-    volume: number;
-    weight: number;
-    category: string;
-}
+
 
 interface Props {
     workout?: Workout;
     time: number;
     handleClose: () => void;
-    pr: Prs[] | null;
 }
 
 const WorkoutCompletedReport = (props: Props) => {
@@ -25,6 +19,7 @@ const WorkoutCompletedReport = (props: Props) => {
     const exerciseManager = ExerciseManager();
     const userExerciseRecordManager = UserExerciseRecordManager();
     const [userData, setUserData] = useState<Exercise[] | null>(null);
+    const [prData, setPrData] = useState<Exercise[] | null>(null);
     const [prsResults, setPrsResults] = useState<string[][] | null>(null);
 
     useEffect(() => {
@@ -36,25 +31,84 @@ const WorkoutCompletedReport = (props: Props) => {
                 // dummyvalue or get ExerciseIDs from workout if its available.
                 const exerciseIds = props.workout?.ExerciseIDs ? props.workout.ExerciseIDs.split(',') : dummyExerciseIDs;
 
+
+
                 const userExercises = await Promise.all(
                     exerciseIds.map(async (exerciseId) => {
-                        const exercise = await exerciseManager.getExercisebyID(exerciseId.trim());
+                        const exercise = await exerciseManager.getCompletedExercisebyID(exerciseId.trim());
 
-                        const sets = await setManager.getSets(exerciseId.trim());
+                        const sets = await setManager.getCompletedSets(exerciseId.trim());
 
                         const prResults = await Promise.all(
                             sets.map(async (set) => userExerciseRecordManager.PRanator(exercise?.ExerciseID ? exercise.ExerciseID.trim() : '', set.NumberReps, set.Weight))
                         );
-                        setPrsResults((prevResults) => (prevResults ? [...prevResults, prResults] : [prResults]));
+                        sets.forEach((set, index) => {
+                            set.prResults = prResults[index];
+                        });
 
+
+                        setPrsResults((prevResults) => (prevResults ? [...prevResults, prResults] : [prResults]));
 
 
                         return { ...exercise, sets };
                     })
                 );
 
-                const filteredUserExercises = userExercises.filter((exercise) => exercise !== undefined) as Exercise[];
+                const filteredUserExercises = userExercises.filter((exercise) => {
+                    return (
+                        exercise !== undefined &&
+                        exercise.sets !== undefined &&
+                        exercise.sets.length > 0
+                    );
+                }) as Exercise[];
                 setUserData(filteredUserExercises);
+
+                //grouping all sets by exerciseID
+                const groupedExercises: { [key: string]: Exercise } = {};
+                filteredUserExercises.forEach((exercise) => {
+                    const exerciseId = exercise?.ExerciseID || '';
+                    if (!groupedExercises[exerciseId]) {
+                        groupedExercises[exerciseId] = { ...exercise, sets: [] };
+                    }
+                    groupedExercises[exerciseId].sets = [
+                        ...groupedExercises[exerciseId].sets,
+                        ...exercise.sets,
+                    ];
+                });
+                const uniqueFiltered = Object.values(groupedExercises);
+
+                const filteredExercises = uniqueFiltered
+                    .map((exercise) => {
+                        const highestReps = Math.max(...exercise.sets.map((set: Set) => set.NumberReps));
+                        const highestWeight = Math.max(...exercise.sets.map((set: Set) => set.Weight));
+
+                        exercise.sets = exercise.sets
+                            .map((set: Set) => {
+                                if (set.NumberReps === highestReps && set.Weight === highestWeight && set.prResults === 'Both') {
+                                    return { ...set };
+                                }
+
+                                if (set.NumberReps === highestReps && set.prResults === 'Both') {
+                                    set.prResults = 'Volume';
+                                }
+
+                                if (set.Weight === highestWeight && set.prResults === 'Both') {
+                                    set.prResults = 'Weight';
+                                }
+
+                                return set;
+                            })
+                            .filter((set: Set) => set.NumberReps === highestReps || set.Weight === highestWeight)
+                            .filter((set: Set) => set.prResults !== 'None'); // Filter out sets with prResults 'None'
+
+                        return exercise;
+                    })
+                    .filter((exercise) => exercise.sets.length > 0); // Filter out exercises with no sets
+
+                setPrData(filteredExercises)
+
+
+
 
             } catch (error) {
                 console.error('Error fetching user exercises:', error);
@@ -89,7 +143,8 @@ const WorkoutCompletedReport = (props: Props) => {
                     <p>Exercises Completed:</p>
                 </div>
 
-                {userData !== null ?
+                {userData !== null && userData.length > 0 ?
+
                     <div className="reports-exercise-list">
                         {userData.map((exercise, index) => (
                             <ul key={index}>
@@ -98,6 +153,7 @@ const WorkoutCompletedReport = (props: Props) => {
                                     <div className="setsNreps">
                                         {exercise.sets.map((set: Set, setIndex: number) => (
                                             <div key={setIndex}>
+
                                                 {set.NumberReps} x {set.Weight}
                                             </div>
                                         ))}
@@ -110,42 +166,42 @@ const WorkoutCompletedReport = (props: Props) => {
                     <div className="list-title">None</div>
                 }
 
-                {userData !== null ?
-                
+                {prData !== null && prData.length > 0 ?
+
                     <div className="reports-exercise-list">
                         <div className="reports-exercise-pr">
                             <p>PRs set:</p>
                         </div>
-                        {userData.map((exercise, index) => {
-                            const exercisePrSet = exercise.sets.some((set: Set, setIndex: number) => {
-                                const prResult = prsResults && prsResults[index] && prsResults[index][setIndex];
-                                return prResult !== "None";
-                            });
-
-                            return (
-                                <ul key={index}>
+                        {prData.map((exercise, index) => (
+                            <ul key={index}>
+                                {exercise.sets.some((set: Set) => set.prResults !== "None") && (
                                     <div className="pr-info">
-                                        {exercisePrSet && <div className="pr-title">{exercise.Title}:</div>}
+                                        <div className="pr-title">{exercise.Title}:</div>
                                         <div className="pr-content">
                                             {exercise.sets.map((set: Set, setIndex: number) => {
-                                                const prResult = prsResults && prsResults[index] && prsResults[index][setIndex];
-                                                if (prResult !== "None") {
+                                                if (set.prResults !== "None") {
                                                     return (
                                                         <div key={setIndex}>
-                                                            {set.NumberReps} x {set.Weight} : {prResult}
+                                                            {set.NumberReps} x {set.Weight} : {set.prResults}
                                                         </div>
                                                     );
                                                 } else {
-                                                    return null; // Don't render if PR result is "None"
+                                                    return null;
                                                 }
                                             })}
                                         </div>
                                     </div>
-                                </ul>
-                            );
-                        })}
+                                )}
+                            </ul>
+
+                        ))}
+
+
+
+
+
                     </div>
-                    : <div className="list-title">None</div>
+                    : <div className="list-title"></div>
                 }
 
             </div>
