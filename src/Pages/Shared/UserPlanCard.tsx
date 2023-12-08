@@ -31,20 +31,6 @@ const UserPlanCard = (props: Props) => {
         props.setShowExerciseSearch(ShowExerciseSearch);
     }
 
-    const handleMarkSetCompleted = (checked: boolean, SetIndex: number, ExerciseIndex: number) => {
-        let newCompletedSets = [];
-        
-        if(checked && exercises[ExerciseIndex].Sets[SetIndex].NumberReps && exercises[ExerciseIndex].Sets[SetIndex].Weight){
-            newCompletedSets = [...completedSets, { SetIndex: SetIndex, ExerciseIndex: ExerciseIndex, Reps: exercises[ExerciseIndex].Sets[SetIndex].NumberReps, Weight: exercises[ExerciseIndex].Sets[SetIndex].Weight}];
-        } else {
-            let existingSets = completedSets;
-            existingSets.splice(completedSets.findIndex(x => x.SetIndex === SetIndex), 1);
-            newCompletedSets = existingSets;
-        }
-
-        setCompletedSets(newCompletedSets);
-        props.setCompletedSets(newCompletedSets);
-    }
     
     const handleAddExercise = (exerciseToAdd: Exercise) => {
         console.log("Does it have an exerciseID?", exerciseToAdd)
@@ -63,52 +49,57 @@ const UserPlanCard = (props: Props) => {
     }
 
     const handleaddCompletedSet = (exerciseIndex: number) => {
-        console.log(exercises[exerciseIndex])
         const currentSetIDs = exercises[exerciseIndex].Sets;
-        const newSetID = {NumberReps: 12, Weight: 100} as Set;
+        const newSetID = { NumberReps: 12, Weight: 100 } as Set;
         const newSetIDs = [...currentSetIDs, newSetID];
-        
-        let newExercises = exercises;
-        let updatedExercise = newExercises[exerciseIndex];
-        console.log(updatedExercise.Sets);
+    
+        let newExercises = [...exercises]; 
+        let updatedExercise = { ...newExercises[exerciseIndex] }; 
         updatedExercise.Sets = newSetIDs;
-        console.log(newSetIDs);
+        newExercises[exerciseIndex] = updatedExercise;
+    
         setExercises(newExercises);
-    }
+    };
 
     const handleSetReps = (SetIndex: number, ExerciseIndex: number, Reps: number) => {
         const idx = reps.findIndex(x => x.SetIndex === SetIndex && x.ExerciseIndex === ExerciseIndex);
-
-        let newExercises = exercises;
-        newExercises[ExerciseIndex].Sets[SetIndex].NumberReps = Reps;
+    
+        let newExercises = [...exercises];
+        let updatedExercise = { ...newExercises[ExerciseIndex] };
+        updatedExercise.Sets[SetIndex].NumberReps = Reps;
+        newExercises[ExerciseIndex] = updatedExercise;
+    
         setExercises(newExercises);
-        
-        if(idx === -1){
-            const newReps = [...reps, {SetIndex: SetIndex, ExerciseIndex: ExerciseIndex, Reps: Reps}];
+    
+        if (idx === -1) {
+            const newReps = [...reps, { SetIndex: SetIndex, ExerciseIndex: ExerciseIndex, Reps: Reps }];
             setReps(newReps);
         } else {
-            let newReps = reps;
+            let newReps = [...reps];
             newReps[idx].Reps = Reps;
             setReps(newReps);
         }
-    }
+    };
      
-     const handleSetWeights = (SetIndex: number, ExerciseIndex: number, Weight: number) => {
+    const handleSetWeights = (SetIndex: number, ExerciseIndex: number, Weight: number) => {
         const idx = weights.findIndex(x => x.SetIndex === SetIndex && x.ExerciseIndex === ExerciseIndex);
-
-        let newExercises = exercises;
-        newExercises[ExerciseIndex].Sets[SetIndex].Weight = Weight;
+    
+        let newExercises = [...exercises];
+        let updatedExercise = { ...newExercises[ExerciseIndex] };
+        updatedExercise.Sets[SetIndex].Weight = Weight;
+        newExercises[ExerciseIndex] = updatedExercise;
+    
         setExercises(newExercises);
-
-        if(idx === -1){
-            const newWeights = [...weights, {SetIndex: SetIndex, ExerciseIndex: ExerciseIndex, Weight: Weight}];
+    
+        if (idx === -1) {
+            const newWeights = [...weights, { SetIndex: SetIndex, ExerciseIndex: ExerciseIndex, Weight: Weight }];
             setWeights(newWeights);
         } else {
-            let newWeights = weights;
+            let newWeights = [...weights];
             newWeights[idx].Weight = Weight;
             setWeights(newWeights);
         }
-    }
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -170,7 +161,7 @@ const UserPlanCard = (props: Props) => {
         };
     
         fetchData();
-    }, [props.existingWorkout , props.setCompletedSets, props.setExercises, props.setShowExerciseSearch]);
+    }, [props.existingWorkout]);
     
    
 
