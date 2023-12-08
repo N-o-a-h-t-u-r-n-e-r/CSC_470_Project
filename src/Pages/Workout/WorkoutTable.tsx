@@ -33,9 +33,9 @@ const WorkoutTable = (props: Props) => {
 
     const handleMarkSetCompleted = (checked: boolean, SetIndex: number, ExerciseIndex: number) => {
         let newCompletedSets = [];
-
-        if(checked){
-            newCompletedSets = [...completedSets, { SetIndex: SetIndex, ExerciseIndex: ExerciseIndex, Reps: reps[reps.findIndex(x => x.SetIndex === SetIndex && x.ExerciseIndex === ExerciseIndex)]?.Reps, Weight: weights[weights.findIndex(x => x.SetIndex === SetIndex && x.ExerciseIndex === ExerciseIndex)]?.Weight}];
+        
+        if(checked && exercises[ExerciseIndex].Sets[SetIndex].NumberReps && exercises[ExerciseIndex].Sets[SetIndex].Weight){
+            newCompletedSets = [...completedSets, { SetIndex: SetIndex, ExerciseIndex: ExerciseIndex, Reps: exercises[ExerciseIndex].Sets[SetIndex].NumberReps, Weight: exercises[ExerciseIndex].Sets[SetIndex].Weight}];
         } else {
             let existingSets = completedSets;
             existingSets.splice(completedSets.findIndex(x => x.SetIndex === SetIndex), 1);
