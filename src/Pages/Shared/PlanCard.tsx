@@ -88,7 +88,7 @@ const PlanCard = (props: Props) => {
                     );
                   })}
               </div>
-              <button className="plan-card-button">Start</button>
+              <button className="plan-card-button" onClick={() => props.returnPlan(plan)}>Start</button>
             </div>
           ))}
         </div>
