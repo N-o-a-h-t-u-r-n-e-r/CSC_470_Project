@@ -13,8 +13,10 @@ interface Props {
 const StartWorkout = (props: Props) => {
     const [displayWorkoutInProgress, setDisplayWorkoutInProgress] = useState(false);
     const [workoutFromPlan, setWorkoutFromPlan] = useState<Workout>();
+    const [workoutFromUserPlan, setWorkoutFromUserPlan] = useState();
+    const [forGlobalPlan, setForGlobalPlan] = useState(false);
 
-    const handleStartWithPlan = (plan: Plan) => {
+    const handleStartWithGlobalPlan = (plan: Plan) => {
         console.log(plan);
 
         const newWorkout = {
@@ -23,6 +25,15 @@ const StartWorkout = (props: Props) => {
         } as unknown as Workout;
 
         setWorkoutFromPlan(newWorkout);
+        setForGlobalPlan(true);
+
+        setDisplayWorkoutInProgress(true);
+    }
+
+    const handleStartWithUserPlan = (plan: any) => {
+        console.log(plan);
+
+        setWorkoutFromUserPlan(plan);
 
         setDisplayWorkoutInProgress(true);
     }
@@ -30,14 +41,14 @@ const StartWorkout = (props: Props) => {
     return(
         <>
             {displayWorkoutInProgress ?
-                <WorkoutInProgress workout={workoutFromPlan} />
+                <WorkoutInProgress workout={workoutFromPlan} workoutFromUserPlan={workoutFromUserPlan} forGlobalPlan={forGlobalPlan} />
             :
                 <div className="container">
                     <div className="header start-workout-header">
                         <h1>Preset Plans</h1>
                     </div>
                     <div className="body start-workout-body">
-                        <PlanCard returnPlan={(plan: Plan) => handleStartWithPlan(plan)}></PlanCard>
+                        <PlanCard returnGlobalPlan={(plan: Plan) => handleStartWithGlobalPlan(plan)} returnUserPlan={(plan: Plan) => handleStartWithUserPlan(plan)}></PlanCard>
 
                     </div>
                     <div className="footer start-blank-workout-button-container">

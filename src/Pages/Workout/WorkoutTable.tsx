@@ -9,7 +9,9 @@ import { ExerciseWithSet } from "../../Models/ExerciseWithSet";
 import { Set } from "../../Models/Set";
 
 interface Props {
-    existingWorkout: Workout | undefined,
+    existingWorkout?: Workout | undefined,
+    existingUserPlan?: any,
+    forGlobalPlan: boolean,
     setShowExerciseSearch: (ShowExerciseSearch: boolean) => void,
     setExercises: (Exercises: ExerciseWithSet[]) => void,
     setCompletedSets: (CompletedSets: {SetIndex: number, ExerciseIndex: number, Reps: number, Weight: number}[]) => void,
@@ -112,7 +114,8 @@ const WorkoutTable = (props: Props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (props.existingWorkout) {
+            if (props.forGlobalPlan === true && props.existingWorkout) {
+                console.log(props.existingWorkout);
                 let newExercises: ExerciseWithSet[] = [];
                 try {
                     const exerciseIDs = props.existingWorkout.ExerciseIDs.split(',').map(id => id.trim());
@@ -122,7 +125,6 @@ const WorkoutTable = (props: Props) => {
                         let newExerciseWithSets: ExerciseWithSet | undefined = undefined;
                         try {
                             const globalExercise = await exerciseManager.getGlobalExercisebyID(trimmedID);
-                            const userExercise = await exerciseManager.getUserExercisebyID(trimmedID);
     
                             if (globalExercise) {
                                 const setPromises = globalExercise.SetID.map(async id => {
@@ -149,8 +151,76 @@ const WorkoutTable = (props: Props) => {
                                     ExerciseID: trimmedID    
                                 } as unknown as ExerciseWithSet;
 
-                            }else if (userExercise) {
-                                // implement exercise & set for user plan
+                            }
+                            
+                            if(newExerciseWithSets)
+                                newExercises.push(newExerciseWithSets);
+                        } catch (error) {
+                            // Handle errors if needed
+                        }
+                    });
+    
+                    await Promise.all(exercisePromises);
+                } catch (error) {
+                    // Handle errors if needed
+                }
+                setExercises(newExercises);
+                props.setExercises(newExercises)
+            } else if(props.existingUserPlan){
+                let newExercises: ExerciseWithSet[] = [];
+                try {
+                    console.log(props.existingUserPlan);
+                    const exerciseIDsArray:string[] = props.existingUserPlan[0].ExerciseIDs.split(',');
+                    const exerciseIDs = exerciseIDsArray.map(id => id.trim());
+
+                    console.log(exerciseIDs);
+    
+                    const exercisePromises = exerciseIDs.map(async (trimmedID, index) => {
+                        console.log('getting with id: ' + trimmedID);
+                        let newExerciseWithSets: ExerciseWithSet | undefined = undefined;
+                        try {
+                            const globalExercise = await exerciseManager.getGlobalExercisebyID(trimmedID);
+                            const userExercise = await exerciseManager.getUserExercisebyID(trimmedID);
+
+                            console.log(globalExercise, userExercise);
+    
+                            if (globalExercise !== undefined) {
+                                // Now, assign the fetched sets to the 'sets' variable
+                                const exercise: {reps: number[], sets: {Weight: number, NumberReps: number}[], title: string} = props.existingUserPlan[0].exercises[index];
+
+                                console.log(exercise);
+
+                                const sets: Set[] = exercise.sets.map(x => ({
+                                    NumberReps: x?.NumberReps,
+                                    Weight: x?.Weight
+                                } as unknown as Set));
+                            
+                                newExerciseWithSets = {
+                                    Title: globalExercise.Title,
+                                    Description: globalExercise.Description,
+                                    Date: globalExercise.Date,
+                                    MuscleGroup: globalExercise.MuscleGroup,
+                                    Sets: sets.length > 0 ? sets : [],
+                                    ExerciseID: trimmedID    
+                                } as unknown as ExerciseWithSet;
+
+                            }else if(userExercise !== undefined){
+                                // Now, assign the fetched sets to the 'sets' variable
+                                const exercise: {reps: number[], sets: {Weight: number, NumberReps: number}[], title: string} = props.existingUserPlan[0].exercises[index];
+
+                                const sets: Set[] = exercise.sets.map(x => ({
+                                    NumberReps: x?.NumberReps,
+                                    Weight: x?.Weight
+                                } as unknown as Set));
+                            
+                                newExerciseWithSets = {
+                                    Title: userExercise.Title,
+                                    Description: userExercise.Description,
+                                    Date: userExercise.Date,
+                                    MuscleGroup: userExercise.MuscleGroup,
+                                    Sets: sets.length > 0 ? sets : [],
+                                    ExerciseID: trimmedID    
+                                } as unknown as ExerciseWithSet;
                             }
                             
                             if(newExerciseWithSets)

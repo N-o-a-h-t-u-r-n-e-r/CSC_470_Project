@@ -14,6 +14,8 @@ import { ExerciseWithSet } from "../../Models/ExerciseWithSet";
 
 interface Props {
     workout?: Workout,
+    workoutFromUserPlan?: any,
+    forGlobalPlan: boolean
 }
 
 const WorkoutInProgress = (props: Props) => {
@@ -145,7 +147,7 @@ const WorkoutInProgress = (props: Props) => {
                     <button className="end-workout" onClick={handleEndWorkout}>END</button>
                 </div>
                 <div className="body">
-                    <WorkoutTable existingWorkout={workout} setExercises={(Exercises: ExerciseWithSet[]) => setExercises(Exercises)} setCompletedSets={(CompletedSets: {SetIndex: number, ExerciseIndex: number, Reps: number, Weight: number}[]) => setCompletedSets(CompletedSets)} setShowExerciseSearch={setShowExerciseSearch} />
+                    <WorkoutTable existingWorkout={workout} existingUserPlan={props.workoutFromUserPlan} forGlobalPlan={props.forGlobalPlan} setExercises={(Exercises: ExerciseWithSet[]) => setExercises(Exercises)} setCompletedSets={(CompletedSets: {SetIndex: number, ExerciseIndex: number, Reps: number, Weight: number}[]) => setCompletedSets(CompletedSets)} setShowExerciseSearch={setShowExerciseSearch} />
                 </div>
             </div>
             

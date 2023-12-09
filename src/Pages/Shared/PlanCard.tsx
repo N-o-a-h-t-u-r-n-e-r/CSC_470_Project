@@ -7,7 +7,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 interface Props {
 
-  returnPlan: (plan: Plan) => void
+  returnGlobalPlan: (plan: Plan) => void
+  returnUserPlan: (plan: Plan) => void
 }
 
 interface UserPlan {
@@ -115,7 +116,7 @@ const PlanCard = (props: Props) => {
                 );
               })}
           </div>
-          <button className="plan-card-button" onClick={() => props.returnPlan(plan)}>Start</button>
+          <button className="plan-card-button" onClick={() => props.returnGlobalPlan(plan)}>Start</button>
         </div>
       ))}
   
@@ -134,7 +135,7 @@ const PlanCard = (props: Props) => {
               </div>
             ))}
           </div>
-          <button className="plan-card-button">Start</button>
+          <button className="plan-card-button" onClick={() => props.returnUserPlan(userPlan)}>Start</button>
         </div>
       ))}
     </div>
