@@ -131,7 +131,7 @@ const WorkoutPlans = (props: Props) => {
                         </div>
                       ))}
                     </div>
-                    <button className="plan-card-button">Start</button>
+                    <button className="plan-card-button">Edit</button>
                   </div>
                 ))}
               </div>

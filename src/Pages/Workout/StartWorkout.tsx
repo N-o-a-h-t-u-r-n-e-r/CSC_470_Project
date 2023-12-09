@@ -4,6 +4,7 @@ import WorkoutInProgress from "./WorkoutInProgress";
 import PlanCard from "../Shared/PlanCard";
 import { Plan } from "../../Models/Plan";
 import { Workout } from "../../Models/Workout";
+import  WorkoutPlans  from "../Plans/WorkoutPlans";
 
 interface Props {
 
@@ -33,10 +34,11 @@ const StartWorkout = (props: Props) => {
             :
                 <div className="container">
                     <div className="header start-workout-header">
-                        <h1>Preset Workouts</h1>
+                        <h1>Preset Plans</h1>
                     </div>
                     <div className="body start-workout-body">
                         <PlanCard returnPlan={(plan: Plan) => handleStartWithPlan(plan)}></PlanCard>
+
                     </div>
                     <div className="footer start-blank-workout-button-container">
                         <button className="start-blank-workout-button" onClick={() => setDisplayWorkoutInProgress(!displayWorkoutInProgress)}>Start Blank Workout</button>
