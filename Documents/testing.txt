@@ -1,8 +1,7 @@
 Log on                                                                     -worked
 landing page displayed                                                     -worked
 Start workout menu button                                                  -worked
-Workout plans menu button
-User Progress menu button
+Workout plans menu button                                                  -worked
 Start leg day 1                                                            -worked
 Start leg day 2                                                            -worked
 Start pull day 1                                                           -worked
@@ -17,7 +16,8 @@ add set                                                                    -work
 scroll works in the add exercise popup                                     -worked
 x button in add exercise popup works                                       -worked
 exceed the length of the wrokout screen, make sure the scroll works        -worked
+create a new user plans                                                    -worked
+start a workout from that user created plan                                -worked
 end workout                                                                -worked
-after action report
+after action report                                                        -worked
 after action report x button takes the user back to the start workout page -worked
-prs updated in the user progress page
