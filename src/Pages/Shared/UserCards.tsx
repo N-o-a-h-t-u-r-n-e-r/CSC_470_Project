@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import UserPlanTable from '../Shared/UserPlanTable'; // Import the UserPlanCard component
+import UserPlanCard from './UserPlanTable'; // Import the UserPlanCard component
 import { Workout } from "../../Models/Workout";
 import { Exercise } from "../../Models/Exercise";
 import ExerciseManager from "../../Managers/ExerciseManager";
-import ExerciseSearch from "../Shared/ExerciseSearch";
+import ExerciseSearch from "./ExerciseSearch";
 import SetManager from "../../Managers/SetManager";
 import { ExerciseWithSet } from "../../Models/ExerciseWithSet";
-import WorkoutInProgress from "../Workout/WorkoutInProgress";
-import WorkoutTable from "../Workout/WorkoutTable";
 import { Set } from "../../Models/Set";
 import { useAuth0 } from "@auth0/auth0-react";
 import { doc, addDoc, updateDoc, getDoc, getDocs, deleteDoc, collection, Timestamp, query, where } from "@firebase/firestore"
@@ -25,16 +23,21 @@ interface UserPlan {
 
 }
 
-const WorkoutPlans = (props: Props) => {
-  const [showUserPlanTable, setShowUserPlanTable] = useState(false);
+const UserCards = (props: Props) => {
+  const [showUserPlanCard, setShowUserPlanCard] = useState(false);
   const { user } = useAuth0();
   const [userPlan, setUserPlan] = useState<any | null>(null);
   const [planTitle, setPlanTitle] = useState('');
+  const [workout, setWorkout] = useState(props.workout);
+  const [workoutCompleted, setWorkoutCompleted] = useState(false);
+  const [showWorkoutCompletedReport, setShowWorkoutCompletedReport] = useState(false);
+  const [showExerciseSearch, setShowExerciseSearch] = useState(false);
   const [exercises, setExercises] = useState<ExerciseWithSet[]>([]);
   const [completedSets, setCompletedSets] = useState<{ SetIndex: number, ExerciseIndex: number, Reps: number, Weight: number }[]>([]);
   const [isCreateMode, setIsCreateMode] = useState(true);
-  const [workoutFromPlan, setWorkoutFromPlan] = useState<Workout>();
+
   const planCollectionRef = collection(firestore, "User_Plans");
+
 
 
   const fetchUserPlan = async () => {
@@ -52,13 +55,12 @@ const WorkoutPlans = (props: Props) => {
   };
 
 
-
+ 
   const handleCreatePlan = () => {
 
     setIsCreateMode(false);
-    setShowUserPlanTable(true);
+    setShowUserPlanCard(true);
   };
-
 
 
   const handleSave = async () => {
@@ -84,61 +86,83 @@ const WorkoutPlans = (props: Props) => {
 
       alert('Error saving workout. Please try again.');
     }
-
+    
     setIsCreateMode(true);
-    setShowUserPlanTable(false);
+    setShowUserPlanCard(false);
 
-
+    
   };
 
   useEffect(() => {
-
+    // Fetch user plans when the component mounts or when user changes
     fetchUserPlan();
   }, [user]);
 
 
+  const handleEditPlan = async (plan: UserPlan) => {
+  
+        
+       
+        setIsCreateMode(false);
+        setShowUserPlanCard(true);
+      
+  };
+
   return (
-    <div className="container">
-      <h1 className="user-plans">User Plans</h1>
-      <div className="body start-workout-body">
-        {showUserPlanTable ? (
-          <UserPlanTable
-            existingWorkout={workoutFromPlan}
+    <div>
+     
+      
+      
+        {showUserPlanCard ? (
+          <UserPlanCard
+            existingWorkout={workout}
             setExercises={(Exercises: ExerciseWithSet[]) => setExercises(Exercises)}
             setCompletedSets={(CompletedSets: { SetIndex: number; ExerciseIndex: number; Reps: number; Weight: number }[]) =>
               setCompletedSets(CompletedSets)
             }
-            setShowExerciseSearch={() => { }}
-            planTitle={planTitle}
-            setPlanTitle={setPlanTitle}
+            setShowExerciseSearch={() => {}}
+            planTitle={planTitle} // Pass planTitle down to UserPlanCard
+            setPlanTitle={setPlanTitle} // Pass setPlanTitle down to UserPlanCard
+
           />
         ) : (
+
           <div>
+
             {userPlan && userPlan.length > 0 && (
-              <div className="plan-card-box">
-                {userPlan.map((plan: { userId: string; exercises: { title: string; reps: number[] }[], planTitle: string; ExerciseIDs: string; planId: string }, planIndex: number) => (
+              <div>
+
+                {userPlan.map((plan: { userId: string; exercises: { title: string; reps: number[] }[], planTitle: string }, planIndex: number) => (
                   <div key={planIndex} className="plan-card">
-                    <h1>{plan.planTitle}</h1>
+                    <h2>{plan.planTitle}</h2>
                     <div>
                       {plan.exercises.map((exercise, index) => (
-                        <div key={index} className="exercise-title">
-                          <p className="plan-exercise">{exercise.title}:</p>
+                        <p key={index} className="plan-exercise-title">{exercise.title}</p>
+                      ))}
+                    </div>
+
+                    <div className="sets-reps-box">
+
+                      {plan.exercises.map((exercise, exerciseIndex) => (
+                        <div key={exerciseIndex}>
                           {exercise.reps.length > 0 && (
-                            <div className="plan-sets">
-                              <p>{exercise.reps.length} x {exercise.reps[0]}</p>
+                            <div>
+                              <p className="sets-reps">{exercise.reps.length} x {exercise.reps[0]}</p>
                             </div>
                           )}
                         </div>
                       ))}
+
                     </div>
-                    <button className="plan-card-button">Start</button>
+                    <button onClick={() => handleEditPlan}>Edit</button>
                   </div>
                 ))}
               </div>
             )}
           </div>
         )}
-      </div>
+     
+
       <div className="footer start-blank-workout-button-container">
         {isCreateMode ? (
           <button className="start-blank-workout-button" onClick={handleCreatePlan}>
@@ -153,4 +177,4 @@ const WorkoutPlans = (props: Props) => {
     </div>
   );
 };
-export default WorkoutPlans;
+export default UserCards;

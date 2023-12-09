@@ -6,7 +6,7 @@ import { firestore } from "../../firebase_setup/firebase"
 import { useAuth0 } from "@auth0/auth0-react";
 
 interface Props {
-    setShowExerciseAdd?: (showExerciseAdd: boolean) => void,
+
     returnPlan: (plan: Plan) => void
 }
 
@@ -72,7 +72,7 @@ const PlanCard = (props: Props) => {
           {planList.map((plan, index) => (
             <div className="plan-card" key={plan.id}>
               <h1>{plan.Title}</h1>
-              <p className="exercise-details">
+              <div className="exercise-details">
                 {plan.ExerciseIDs &&
                   plan.ExerciseIDs.split(',').map((exerciseId, index) => {
                     const exercise = exerciseList.find((ex) => ex.id === exerciseId.trim());
@@ -87,7 +87,7 @@ const PlanCard = (props: Props) => {
                       )
                     );
                   })}
-              </p>
+              </div>
               <button className="plan-card-button" onClick={() => props.returnPlan(plan)}>Start</button>
             </div>
           ))}
