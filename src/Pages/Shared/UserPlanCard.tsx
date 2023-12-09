@@ -13,6 +13,7 @@ interface Props {
     setShowExerciseSearch: (ShowExerciseSearch: boolean) => void,
     setExercises: (Exercises: ExerciseWithSet[]) => void,
     setCompletedSets: (CompletedSets: {SetIndex: number, ExerciseIndex: number, Reps: number, Weight: number}[]) => void,
+    
 }
 
 const UserPlanCard = (props: Props) => {
