@@ -148,13 +148,32 @@ body {
   padding: 20px 50px;
 }
 
+.create-plan-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+  margin-top: 20px; 
+  margin-bottom: 20px; 
+  font-size: 1.5rem;
+}
 
+#createPlanTitle {
+  display: block;
+  margin: 0 auto;
+}
 .workout-plans-body { 
   border-block: 5px solid black;
   margin: 0 20px;
   filter: drop-shadow(lightgrey -1px 3px);
 }
 
+
+
+
+.user-plans{
+  margin: 3%;
+}
 /*****************************************/
 
 
@@ -176,6 +195,7 @@ body {
   border-radius: 15px;
   text-align: center; 
   padding: 10px; 
+  font-weight: bold;
 }
 
 .plan-card-button{

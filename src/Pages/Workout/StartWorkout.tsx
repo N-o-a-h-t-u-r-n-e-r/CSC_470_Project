@@ -33,7 +33,7 @@ const StartWorkout = (props: Props) => {
             :
                 <div className="container">
                     <div className="header start-workout-header">
-                        <h1>Start Workout</h1>
+                        <h1>Preset Workouts</h1>
                     </div>
                     <div className="body start-workout-body">
                         <PlanCard returnPlan={(plan: Plan) => handleStartWithPlan(plan)}></PlanCard>

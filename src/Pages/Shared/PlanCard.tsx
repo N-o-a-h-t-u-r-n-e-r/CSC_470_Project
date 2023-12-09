@@ -6,7 +6,7 @@ import { firestore } from "../../firebase_setup/firebase"
 import { useAuth0 } from "@auth0/auth0-react";
 
 interface Props {
-    setShowExerciseAdd?: (showExerciseAdd: boolean) => void,
+
     returnPlan: (plan: Plan) => void
 }
 
